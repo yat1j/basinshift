@@ -218,3 +218,25 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# BASINSHIFT: research data stays local
+data/raw/
+data/interim/
+data/processed/
+
+# Training runs and temporary outputs
+checkpoints/
+logs/
+mlruns/
+outputs/tmp/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Frontend dependencies and build output
+node_modules/
+.next/
+out/
+dist/
+build/
