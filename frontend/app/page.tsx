@@ -1,138 +1,43 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import HeroVideo from "@/components/ui/HeroVideo";
 import CatchmentMap from "@/components/map/CatchmentMap";
 import { ArrowRight, ChevronRight, Play, Pause, AlertTriangle, ShieldCheck } from "lucide-react";
 
 export default function HomePage() {
-  const [isPlayingBreakout, setIsPlayingBreakout] = useState(true);
-  const [isTerrainPlaying, setIsTerrainPlaying] = useState(true);
-  const terrainVideoRef = useRef<HTMLVideoElement>(null);
-
-  const toggleTerrainPlay = () => {
-    if (!terrainVideoRef.current) return;
-    if (isTerrainPlaying) {
-      terrainVideoRef.current.pause();
-      setIsTerrainPlaying(false);
-    } else {
-      terrainVideoRef.current.play();
-      setIsTerrainPlaying(true);
-    }
-  };
-
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       {/* =========================================================================
-          SECTION 1 — HERO & DUAL MEDIA SHOWCASE (Side by Side: Photo + Playing Video)
+          SECTION 1 — HERO BANNER (Matches Screenshot 5 exactly)
           ========================================================================= */}
-      <section className="relative w-full pt-8 sm:pt-12 pb-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-white/10">
-        {/* Editorial Headline & Action Pills */}
-        <div className="space-y-4 mb-8">
-          <div className="text-xs uppercase tracking-wider font-semibold text-white/60 font-mono">
-            BASINSHIFT • Predict Beyond the Basin
-          </div>
+      <section className="relative w-full">
+        <HeroVideo
+          posterSrc="/media/satellite/google_flood_hero.png"
+          videoSrc="/media/videos/google_floods_hero.mp4"
+          className="h-[480px] sm:h-[560px] md:h-[620px]"
+        >
+          <div className="max-w-6xl mx-auto w-full space-y-6">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-normal tracking-tight text-white font-sans drop-shadow-lg">
+              Discharge Forecasting
+            </h1>
 
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div>
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-normal tracking-tight text-white font-sans drop-shadow-sm">
-                Discharge Forecasting
-              </h1>
-              <p className="text-base sm:text-lg text-white/70 mt-2 max-w-2xl leading-relaxed font-normal">
-                Hydrology-informed machine learning for river-discharge forecasting and high-flow risk across
-                geographically unfamiliar catchments.
-              </p>
-            </div>
-
-            {/* Glass Pill Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              <Link href="/model" className="glass-pill text-sm py-2 px-6 shadow-sm">
+            {/* Glass Pill Buttons (Screenshot 5 style) */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <Link href="/model" className="glass-pill text-sm py-2 px-6 shadow-md">
                 Our Model
               </Link>
-              <Link href="/test" className="glass-pill-solid text-sm py-2 px-6 shadow-md">
+              <Link href="/test" className="glass-pill text-sm py-2 px-6 shadow-md">
                 Test the Model
               </Link>
-              <Link href="/catchments" className="glass-pill text-sm py-2 px-6 shadow-sm">
+              <Link href="/catchments" className="glass-pill text-sm py-2 px-6 shadow-md">
                 Catchment Explorer
               </Link>
             </div>
           </div>
-        </div>
-
-        {/* SIDE-BY-SIDE DUAL MEDIA SHOWCASE */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-          {/* Left Panel: The Photo (Layered Hydrological Model) */}
-          <div className="glass-card relative overflow-hidden border border-white/15 h-[380px] sm:h-[460px] lg:h-[500px] bg-[#080808] flex flex-col justify-between p-5 sm:p-6 group">
-            <div className="flex items-center justify-between z-10">
-              <span className="glass-pill text-xs py-1 px-3 font-mono">
-                Hydrological & Inundation Model
-              </span>
-              <span className="text-xs text-white/50 font-mono">Dual-Layer Physics</span>
-            </div>
-
-            <div className="relative w-full flex-grow my-3 flex items-center justify-center">
-              <Image
-                src="/media/diagrams/floods_layered_model.jpg"
-                alt="Hydrological model and inundation model layered architecture"
-                fill
-                className="object-contain filter contrast-[1.04]"
-                priority
-              />
-            </div>
-
-            <div className="z-10 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-white/70 font-sans">
-              <div>
-                <strong className="text-white">Conceptual Hydrology:</strong> Multi-scale storage & discharge routing
-              </div>
-              <span className="text-[11px] font-mono text-white/40">USGS / CAMELS Benchmark</span>
-            </div>
-          </div>
-
-          {/* Right Panel: The Playing Video (3D Geomorphic Terrain Flythrough) */}
-          <div className="glass-card relative overflow-hidden border border-white/15 h-[380px] sm:h-[460px] lg:h-[500px] bg-black flex flex-col justify-between group">
-            {/* Playing Looping Muted Video */}
-            <video
-              ref={terrainVideoRef}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover filter brightness-[0.88] contrast-[1.06]"
-            >
-              <source src="/media/videos/terrain_flythrough.mp4" type="video/mp4" />
-            </video>
-
-            {/* Gradient Overlays for legibility */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/60 pointer-events-none" />
-
-            <div className="relative z-10 p-5 sm:p-6 flex items-center justify-between">
-              <span className="glass-pill text-xs py-1 px-3 font-mono">
-                Catchment Dynamics • 3D Terrain
-              </span>
-              <span className="text-xs text-white/80 font-mono drop-shadow">Active Orbit</span>
-            </div>
-
-            <div className="relative z-10 p-5 sm:p-6 flex items-center justify-between text-xs text-white/80 font-sans">
-              <div className="drop-shadow">
-                <strong className="text-white">Geomorphology & Drainage:</strong> Topographic river valley relief
-              </div>
-
-              {/* Minimalist Pause / Play Control */}
-              <button
-                onClick={toggleTerrainPlay}
-                className="video-pause-btn"
-                aria-label={isTerrainPlaying ? "Pause terrain flythrough" : "Play terrain flythrough"}
-              >
-                {isTerrainPlaying ? (
-                  <Pause className="w-3.5 h-3.5 fill-white" />
-                ) : (
-                  <Play className="w-3.5 h-3.5 fill-white" />
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
+        </HeroVideo>
       </section>
 
       {/* =========================================================================
@@ -261,39 +166,37 @@ export default function HomePage() {
       </section>
 
       {/* =========================================================================
-          SECTION 4 — REAL SUBMERGED TREES VIDEO BREAKOUT (Matches Screenshot 4)
+          SECTION 4 — LAYERED HYDROLOGICAL MODEL & SATELLITE EARTH OBSERVATION (SIDE BY SIDE)
           ========================================================================= */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 my-16">
-        <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl h-[380px] sm:h-[460px] md:h-[500px]">
-          {/* Real Google Research Floods Alerts Video */}
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.80] contrast-[1.05]"
-          >
-            <source src="/media/videos/floods_alerts_video.mp4" type="video/mp4" />
-          </video>
-
-          {/* Gradient Overlay for Text Legibility */}
-          <div className="absolute inset-0 bg-black/40" />
-
-          {/* Centered Editorial Quote directly over floodwaters (matching Screenshot 4) */}
-          <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-            <h3 className="max-w-2xl text-2xl sm:text-4xl font-normal text-white drop-shadow-xl leading-snug font-sans">
-              To help people worldwide access vital flood information when time is of the essence
-            </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          {/* Left Column: Hydrological & Inundation Layered Model Architecture Photo */}
+          <div className="glass-card overflow-hidden border border-white/10 rounded-2xl p-4 flex flex-col justify-center items-center bg-[#0a0a0a] shadow-2xl">
+            <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] rounded-xl overflow-hidden flex items-center justify-center bg-white/[0.02]">
+              <Image
+                src="/media/floods_layered_model.png"
+                alt="Hydrological and Inundation Layered Model Architecture"
+                fill
+                className="object-contain p-2"
+                priority
+              />
+            </div>
           </div>
 
-          {/* Pause button in bottom right corner (Screenshot 4) */}
-          <button
-            onClick={() => setIsPlayingBreakout(!isPlayingBreakout)}
-            className="video-pause-btn absolute bottom-6 right-6 z-20"
-            aria-label="Pause media"
-          >
-            {isPlayingBreakout ? <Pause className="w-3.5 h-3.5 fill-white" /> : <Play className="w-3.5 h-3.5 fill-white" />}
-          </button>
+          {/* Right Column: High-Resolution Satellite & Earth Observation Video */}
+          <div className="glass-card overflow-hidden border border-white/10 rounded-2xl p-4 flex flex-col justify-center items-center bg-[#0a0a0a] shadow-2xl">
+            <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] rounded-xl overflow-hidden bg-black flex items-center justify-center">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover filter brightness-[0.95] contrast-[1.05]"
+              >
+                <source src="/media/videos/earth_imagery_video.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
         </div>
       </section>
 
