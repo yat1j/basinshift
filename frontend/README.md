@@ -74,3 +74,4 @@ The frontend connects to Member 1's FastAPI inference service via `frontend/lib/
 - Returns structured JSON adhering to `BASINSHIFT_Member2_Post_Predict_UI_Spec.md`.
 
 When the backend is offline, the frontend provides an honest offline state and offers verified offline historical benchmark replays for testing and demonstration.
+

@@ -101,3 +101,4 @@ All media assets utilized across the BASINSHIFT research platform are curated fr
 - **License**: Unsplash Free Commercial & Scientific Use License
 - **Required Attribution**: Satellite Basemap Series
 - **Intended Section**: Homepage Fallback Poster & Editorial Sections
+

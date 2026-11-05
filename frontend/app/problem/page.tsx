@@ -5,18 +5,17 @@ import { ArrowRight, Droplets, Mountain, Clock, Globe, AlertTriangle, Layers } f
 
 export default function ProblemPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-basin-darkest text-slate-100">
+    <div className="flex flex-col min-h-screen bg-white text-[#202124]">
       {/* Editorial Header */}
-      <section className="relative py-20 border-b border-basin-border/60 bg-basin-midnight">
+      <section className="py-20 sm:py-24 border-b border-[#dadce0] bg-[#f8f9fa]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="scientific-badge mb-4">Scientific Problem Formulation</div>
-          <h1 className="text-3xl sm:text-5xl font-light text-white tracking-tight uppercase">
-            The Hydrological <br />
-            <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-basin-cyanAccent">
-              Transferability Challenge
-            </span>
+          <div className="text-xs uppercase tracking-wider font-semibold text-[#1a73e8] mb-3">
+            Scientific Challenge Formulation
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-normal text-[#202124] tracking-tight leading-tight">
+            The Hydrological Transferability Challenge
           </h1>
-          <p className="mt-6 text-base sm:text-lg text-slate-300 max-w-3xl leading-relaxed">
+          <p className="mt-6 text-base sm:text-lg text-[#3c4043] max-w-3xl leading-relaxed">
             Two catchments can receive identical precipitation and produce radically divergent river-discharge
             responses. Differences in antecedent soil moisture, lithology, topography, and channel storage fundamentally
             govern runoff generation.
@@ -25,192 +24,162 @@ export default function ProblemPage() {
       </section>
 
       {/* Hero Media Section */}
-      <section className="py-12 border-b border-basin-border/40 bg-basin-darkest">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-lg overflow-hidden border border-basin-border">
-            <Image
-              src="/media/satellite/dendritic_drainage_basin.jpg"
-              alt="Dendritic river network and watershed drainage pattern"
-              width={1600}
-              height={700}
-              className="w-full h-[400px] object-cover filter contrast-[1.1]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-basin-darkest via-basin-darkest/40 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-              <div className="max-w-xl">
-                <span className="text-[11px] font-mono text-basin-cyan uppercase tracking-wider">
-                  Earth Observation Perspective
-                </span>
-                <p className="text-xs sm:text-sm text-slate-200 mt-1 leading-relaxed">
-                  Drainage network topology dictates travel time, channel attenuation, and hydrograph peak sharpness.
-                  Machine learning architectures must capture these structural mechanics.
-                </p>
-              </div>
-              <div className="font-mono text-[11px] text-slate-400">
-                Figure 1.0 • Dendritic Basin Morphology
-              </div>
+      <section className="py-14 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative rounded-2xl overflow-hidden border border-[#dadce0] shadow-sm">
+          <Image
+            src="/media/satellite/dendritic_drainage_basin.jpg"
+            alt="Dendritic river network and watershed drainage pattern"
+            width={1600}
+            height={700}
+            className="w-full h-[420px] object-cover"
+          />
+          <div className="p-4 bg-white border-t border-[#dadce0] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-[#5f6368]">
+            <div>
+              <strong className="text-[#202124]">Figure 1.0:</strong> Dendritic drainage basin morphology dictates
+              concentration times and hydrograph peak attenuation.
             </div>
+            <div>Source: Earth Observation Series</div>
           </div>
         </div>
       </section>
 
-      {/* Core Physical Mechanisms */}
-      <section className="py-20 border-b border-basin-border/40 bg-basin-midnight">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mb-14">
-            <div className="scientific-badge mb-3">Nonlinear Hydrological Drivers</div>
-            <h2 className="text-2xl sm:text-3xl font-light text-white tracking-tight">
-              Why Traditional ML Overfits to Familiar Basins
-            </h2>
-            <p className="text-slate-400 text-sm mt-3 leading-relaxed">
-              When standard gradient boosting or neural networks train on river discharge time series, they readily learn
-              spurious statistical shortcuts tied to specific gauging stations. When tested on unseen catchments, these
-              assumptions collapse across several physical dimensions:
+      {/* Physical Drivers */}
+      <section className="py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mb-12">
+          <h2 className="text-2xl sm:text-4xl font-normal text-[#202124] tracking-tight mb-4">
+            Why Traditional ML Overfits to Familiar Basins
+          </h2>
+          <p className="text-base text-[#3c4043] leading-relaxed">
+            When standard gradient-boosted trees or neural networks train on historical river gauge time series, they readily
+            learn statistical shortcuts specific to those local basins. When deployed to unmonitored catchments, these
+            assumptions degrade across several physical dimensions:
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="google-card p-6 space-y-3">
+            <div className="w-8 h-8 rounded-full bg-[#e8f0fe] text-[#1a73e8] flex items-center justify-center">
+              <Droplets className="w-4 h-4" />
+            </div>
+            <h3 className="text-base font-medium text-[#202124]">Antecedent Moisture</h3>
+            <p className="text-xs text-[#5f6368] leading-relaxed">
+              Dry soils absorb rainfall through infiltration; saturated soils route subsequent rainfall directly to
+              surface overland flow. A single rainfall pulse yields 10x higher discharge when soils are at field capacity.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-mono">
-            {/* Factor 1: Soil Moisture */}
-            <div className="editorial-card p-6 space-y-3">
-              <div className="flex items-center gap-2 text-basin-cyanAccent">
-                <Droplets className="w-4 h-4" />
-                <span className="text-xs uppercase tracking-wider font-semibold">Antecedent Moisture</span>
-              </div>
-              <h3 className="text-sm font-bold text-white font-sans">Soil Moisture & Gating</h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                Dry soils absorb rainfall through infiltration; saturated soils route subsequent rainfall directly to
-                surface overland flow. A single rainfall event yields 10x higher discharge when soils are near field capacity.
-              </p>
+          <div className="google-card p-6 space-y-3">
+            <div className="w-8 h-8 rounded-full bg-[#e8f0fe] text-[#1a73e8] flex items-center justify-center">
+              <Clock className="w-4 h-4" />
             </div>
+            <h3 className="text-base font-medium text-[#202124]">Multi-Scale Storage</h3>
+            <p className="text-xs text-[#5f6368] leading-relaxed">
+              Water travels through fast surface channels (hours), unsaturated interflow (days), and deep groundwater
+              aquifers (months). Models lacking multi-scale memory fail multi-day horizons.
+            </p>
+          </div>
 
-            {/* Factor 2: Storage Timescales */}
-            <div className="editorial-card p-6 space-y-3">
-              <div className="flex items-center gap-2 text-basin-cyanAccent">
-                <Clock className="w-4 h-4" />
-                <span className="text-xs uppercase tracking-wider font-semibold">Storage Routing</span>
-              </div>
-              <h3 className="text-sm font-bold text-white font-sans">Multi-Scale Reservoirs</h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                Water travels through fast surface channels (hours), unsaturated subsurface interflow (days), and deep
-                groundwater aquifers (months). Models lacking multi-scale memory fail long-horizon forecasting.
-              </p>
+          <div className="google-card p-6 space-y-3">
+            <div className="w-8 h-8 rounded-full bg-[#e8f0fe] text-[#1a73e8] flex items-center justify-center">
+              <Mountain className="w-4 h-4" />
             </div>
+            <h3 className="text-base font-medium text-[#202124]">Topography & Relief</h3>
+            <p className="text-xs text-[#5f6368] leading-relaxed">
+              Steep alpine headwaters exhibit rapid hydrograph rise times, whereas lowland alluvial plains attenuate flood
+              volumes across wide riparian storage zones.
+            </p>
+          </div>
 
-            {/* Factor 3: Topography */}
-            <div className="editorial-card p-6 space-y-3">
-              <div className="flex items-center gap-2 text-basin-cyanAccent">
-                <Mountain className="w-4 h-4" />
-                <span className="text-xs uppercase tracking-wider font-semibold">Geomorphic Relief</span>
-              </div>
-              <h3 className="text-sm font-bold text-white font-sans">Topography & Drainage</h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                Steep alpine headwaters exhibit rapid hydrograph rise times with minimal attenuation, while lowland alluvial
-                valleys distribute flood volumes across wide riparian floodplains.
-              </p>
+          <div className="google-card p-6 space-y-3">
+            <div className="w-8 h-8 rounded-full bg-[#e8f0fe] text-[#1a73e8] flex items-center justify-center">
+              <Globe className="w-4 h-4" />
             </div>
+            <h3 className="text-base font-medium text-[#202124]">Geographic Shift</h3>
+            <p className="text-xs text-[#5f6368] leading-relaxed">
+              A model trained on humid temperate basins experiences severe distribution shift when evaluated in semi-arid,
+              snow-dominated, or karst geologic regimes.
+            </p>
+          </div>
 
-            {/* Factor 4: Spatial Distribution Shift */}
-            <div className="editorial-card p-6 space-y-3">
-              <div className="flex items-center gap-2 text-basin-cyanAccent">
-                <Globe className="w-4 h-4" />
-                <span className="text-xs uppercase tracking-wider font-semibold">Spatial Covariate Shift</span>
-              </div>
-              <h3 className="text-sm font-bold text-white font-sans">Geographic Generalization</h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                A model trained on humid temperate catchments experiences severe covariate shift when evaluated in
-                semi-arid, snow-dominated, or karst geologic regimes.
-              </p>
+          <div className="google-card p-6 space-y-3">
+            <div className="w-8 h-8 rounded-full bg-[#fef7e0] text-[#e37400] flex items-center justify-center">
+              <AlertTriangle className="w-4 h-4" />
             </div>
+            <h3 className="text-base font-medium text-[#202124]">Rare High-Flow Crests</h3>
+            <p className="text-xs text-[#5f6368] leading-relaxed">
+              High-flow crests represent less than 5% of historical observations. Standard loss functions minimize baseflow
+              errors while under-predicting catastrophic flood crests.
+            </p>
+          </div>
 
-            {/* Factor 5: Rare High-Flow Tails */}
-            <div className="editorial-card p-6 space-y-3">
-              <div className="flex items-center gap-2 text-amber-400">
-                <AlertTriangle className="w-4 h-4" />
-                <span className="text-xs uppercase tracking-wider font-semibold">Extreme Tail Events</span>
-              </div>
-              <h3 className="text-sm font-bold text-white font-sans">Rare High-Flow Events</h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                High-flow events (e.g. Q95 exceedances) represent less than 5% of historical observations. Standard loss
-                functions (MSE) minimize baseflow errors while under-predicting catastrophic flood crests.
-              </p>
+          <div className="google-card p-6 space-y-3">
+            <div className="w-8 h-8 rounded-full bg-[#e8f0fe] text-[#1a73e8] flex items-center justify-center">
+              <Layers className="w-4 h-4" />
             </div>
-
-            {/* Factor 6: Temporal Non-Stationarity */}
-            <div className="editorial-card p-6 space-y-3">
-              <div className="flex items-center gap-2 text-basin-cyanAccent">
-                <Layers className="w-4 h-4" />
-                <span className="text-xs uppercase tracking-wider font-semibold">Temporal Holdout</span>
-              </div>
-              <h3 className="text-sm font-bold text-white font-sans">Non-Stationary Climates</h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                Changing meteorological patterns and shifting snowmelt timing demand evaluation on strictly chronological
-                holdout windows rather than random k-fold cross-validation.
-              </p>
-            </div>
+            <h3 className="text-base font-medium text-[#202124]">Temporal Holdouts</h3>
+            <p className="text-xs text-[#5f6368] leading-relaxed">
+              Non-stationary precipitation patterns require evaluation on strictly chronological holdout periods rather
+              than random k-fold cross-validation.
+            </p>
           </div>
         </div>
       </section>
 
       {/* Conceptual Generalization Diagram */}
-      <section className="py-20 border-b border-basin-border/40 bg-basin-darkest">
+      <section className="py-16 bg-[#f8f9fa] border-t border-[#dadce0]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="scientific-badge mb-3">Validation Methodology</div>
-            <h2 className="text-2xl sm:text-3xl font-light text-white tracking-tight">
+          <div className="max-w-2xl mx-auto text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-normal text-[#202124] mb-3">
               Familiar vs. Unseen Catchment Partitioning
             </h2>
-            <p className="text-slate-400 text-xs mt-2 font-mono">
-              [Note: Conceptual schematic illustration for validation philosophy, not actual BASINSHIFT boundary data]
+            <p className="text-xs text-[#5f6368]">
+              [Conceptual schematic of validation philosophy for preventing data leakage]
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-basin-surface/50 border border-basin-border rounded-lg p-6 space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-basin-border/60">
-                <div className="text-xs font-mono font-bold text-white flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-basin-cyan" />
-                  <span>Familiar Catchments (Training Calibration)</span>
+            <div className="google-card p-6 space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-[#dadce0]">
+                <div className="text-sm font-medium text-[#202124] flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#1a73e8]" />
+                  <span>Familiar Catchments (Training Baseline)</span>
                 </div>
-                <span className="text-[10px] font-mono text-slate-400">In-Sample</span>
+                <span className="text-xs font-mono text-[#5f6368]">In-Sample</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-[#3c4043] leading-relaxed">
                 Streamflow gauge records are accessible during model training. The Ridge base and LightGBM residual
-                models optimize reservoir decay constants and nonlinear corrections against historical gauge records.
+                models optimize reservoir decay constants against historical gauge records.
               </p>
-              <div className="p-3 bg-basin-darkest/70 rounded text-[11px] font-mono text-slate-400 space-y-1">
+              <div className="p-3 bg-[#f8f9fa] rounded text-xs text-[#5f6368] space-y-1 font-mono">
                 <div>• Gauge Observations: Included</div>
-                <div>• Reservoir Optimization: Calibrated</div>
-                <div>• Validation Purpose: Baseline sanity verification</div>
+                <div>• Reservoir Routing: Calibrated</div>
+                <div>• Role: Baseline sanity check</div>
               </div>
             </div>
 
-            <div className="bg-basin-surface/50 border border-amber-500/40 rounded-lg p-6 space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-basin-border/60">
-                <div className="text-xs font-mono font-bold text-amber-400 flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-amber-400" />
-                  <span>Unseen Catchments (Geographic Transfer)</span>
+            <div className="google-card p-6 space-y-4 border-[#f9ab00]">
+              <div className="flex items-center justify-between pb-3 border-b border-[#dadce0]">
+                <div className="text-sm font-medium text-[#e37400] flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#e37400]" />
+                  <span>Unseen Catchments (Spatial Transfer)</span>
                 </div>
-                <span className="text-[10px] font-mono text-amber-400">Out-of-Sample</span>
+                <span className="text-xs font-mono text-[#e37400]">Out-of-Sample</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Excluded entirely from training and parameter estimation. Evaluates if generalized hydrological
-                representations transfer without fine-tuning, reflecting real-world predictions in unmonitored basins.
+              <p className="text-xs text-[#3c4043] leading-relaxed">
+                Excluded entirely from model training. Evaluates if generalized hydrological representations transfer
+                without local retraining, simulating real-world unmonitored basins.
               </p>
-              <div className="p-3 bg-basin-darkest/70 rounded text-[11px] font-mono text-amber-300/80 space-y-1">
+              <div className="p-3 bg-[#fef7e0] rounded text-xs text-[#e37400] space-y-1 font-mono">
                 <div>• Gauge Observations: Excluded / Withheld</div>
-                <div>• Reservoir Optimization: Unseen</div>
-                <div>• Validation Purpose: Generalization benchmark</div>
+                <div>• Reservoir Routing: Unseen</div>
+                <div>• Role: Generalization benchmark</div>
               </div>
             </div>
           </div>
 
           <div className="mt-12 text-center">
-            <Link
-              href="/model"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded bg-basin-teal hover:bg-basin-teal/90 border border-basin-cyan/40 text-xs font-mono font-medium text-white transition-all"
-            >
-              <span>Explore How the Two-Stage Hybrid Model Solves This</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+            <Link href="/model" className="google-pill text-sm py-2.5 px-6 shadow-sm">
+              Explore Our Hybrid Model Architecture
             </Link>
           </div>
         </div>

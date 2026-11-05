@@ -25,3 +25,4 @@ interface CatchmentMapProps {
 export default function CatchmentMap(props: CatchmentMapProps) {
   return <CatchmentMapDynamic {...props} />;
 }
+

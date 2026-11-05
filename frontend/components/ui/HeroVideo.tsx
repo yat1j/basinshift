@@ -7,12 +7,14 @@ interface HeroVideoProps {
   videoSrc?: string;
   posterSrc: string;
   className?: string;
+  children?: React.ReactNode;
 }
 
 export default function HeroVideo({
   videoSrc = "/media/videos/river_flow_hero.mp4",
-  posterSrc = "/images/backgrounds/hero_river_satellite.jpg",
+  posterSrc = "/media/satellite/river_sand_satellite.jpg",
   className = "",
+  children,
 }: HeroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -20,23 +22,11 @@ export default function HeroVideo({
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    // Check user preference for reduced motion
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mediaQuery.matches) {
       setReducedMotion(true);
       setIsPlaying(false);
     }
-
-    const handler = (e: MediaQueryListEvent) => {
-      setReducedMotion(e.matches);
-      if (e.matches) {
-        setIsPlaying(false);
-        videoRef.current?.pause();
-      }
-    };
-
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
   const togglePlayback = () => {
@@ -54,7 +44,7 @@ export default function HeroVideo({
 
   return (
     <div className={`relative w-full overflow-hidden ${className}`}>
-      {/* Background Video or Poster */}
+      {/* Background Video or Poster matching Google Research screenshot 5 */}
       {!hasError && !reducedMotion ? (
         <video
           ref={videoRef}
@@ -64,33 +54,33 @@ export default function HeroVideo({
           playsInline
           poster={posterSrc}
           onError={() => setHasError(true)}
-          className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.70] contrast-[1.15]"
+          className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.90] contrast-[1.05]"
         >
           <source src={videoSrc} type="video/mp4" />
         </video>
       ) : (
         <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center filter brightness-[0.65] contrast-[1.1]"
+          className="absolute inset-0 w-full h-full bg-cover bg-center filter brightness-[0.92] contrast-[1.05]"
           style={{ backgroundImage: `url(${posterSrc})` }}
         />
       )}
 
-      {/* Atmospheric Editorial Gradients */}
-      <div className="absolute inset-0 bg-gradient-to-t from-basin-darkest via-basin-darkest/60 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-r from-basin-darkest/80 via-transparent to-basin-darkest/80" />
+      {/* Subtle light gradient for text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/20" />
 
-      {/* Subtle Pause / Play Control */}
-      {!hasError && !reducedMotion && (
-        <button
-          onClick={togglePlayback}
-          className="absolute bottom-6 right-6 z-20 flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono text-slate-300 bg-basin-midnight/70 hover:bg-basin-surface border border-basin-border/70 rounded backdrop-blur-sm transition-all focus:outline-none focus:ring-1 focus:ring-basin-cyan"
-          aria-label={isPlaying ? "Pause background video" : "Play background video"}
-          title={isPlaying ? "Pause video background" : "Play video background"}
-        >
-          {isPlaying ? <Pause className="w-3 h-3 text-basin-cyanAccent" /> : <Play className="w-3 h-3 text-emerald-400" />}
-          <span>{isPlaying ? "Pause Ambient" : "Play Ambient"}</span>
-        </button>
-      )}
+      {/* Content Overlay */}
+      <div className="relative z-10 w-full h-full flex flex-col justify-end p-8 sm:p-14">
+        {children}
+      </div>
+
+      {/* Minimalist Pause Button (matching bottom-right circle in screenshots 3, 4, 5) */}
+      <button
+        onClick={togglePlayback}
+        className="video-pause-btn absolute bottom-6 right-6 z-20"
+        aria-label={isPlaying ? "Pause video" : "Play video"}
+      >
+        {isPlaying ? <Pause className="w-3.5 h-3.5 fill-white" /> : <Play className="w-3.5 h-3.5 fill-white" />}
+      </button>
     </div>
   );
 }

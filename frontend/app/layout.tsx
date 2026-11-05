@@ -4,7 +4,7 @@ import Navbar from "@/components/navigation/Navbar";
 import Footer from "@/components/navigation/Footer";
 
 export const metadata: Metadata = {
-  title: "BASINSHIFT — Predict Beyond the Basin",
+  title: "BASINSHIFT — Discharge Forecasting",
   description:
     "Hydrology-informed machine learning for river-discharge forecasting and high-flow-risk analysis across unfamiliar catchments.",
   keywords: [
@@ -25,12 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
-        <meta name="theme-color" content="#050a0f" />
+        <meta name="theme-color" content="#ffffff" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className="bg-basin-darkest text-slate-100 flex flex-col min-h-screen selection:bg-basin-cyan/20 selection:text-white">
+      <body className="bg-white text-[#202124] flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />

@@ -1,109 +1,254 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import HeroVideo from "@/components/ui/HeroVideo";
-import { ArrowRight, Layers, Activity, Compass, ShieldCheck, Cpu, Waves } from "lucide-react";
+import CatchmentMap from "@/components/map/CatchmentMap";
+import { ArrowRight, ExternalLink, Play, Pause, ChevronRight } from "lucide-react";
 
 export default function HomePage() {
+  const [isPlayingBreakout, setIsPlayingBreakout] = useState(true);
+
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* SECTION 1 — CINEMATIC HERO */}
-      <section className="relative w-full min-h-[92vh] flex items-center justify-center overflow-hidden">
-        {/* Video / Poster Background */}
+    <div className="flex flex-col min-h-screen bg-white text-[#202124]">
+      {/* =========================================================================
+          SECTION 1 — HERO BANNER (Matches Screenshot 5 exactly)
+          ========================================================================= */}
+      <section className="relative w-full">
         <HeroVideo
+          posterSrc="/media/satellite/river_sand_satellite.jpg"
           videoSrc="/media/videos/river_flow_hero.mp4"
-          posterSrc="/images/backgrounds/hero_river_satellite.jpg"
-          className="absolute inset-0 h-full"
-        />
+          className="h-[480px] sm:h-[560px] md:h-[620px]"
+        >
+          <div className="max-w-6xl mx-auto w-full space-y-6">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-normal tracking-tight text-white font-sans drop-shadow-md">
+              Discharge Forecasting
+            </h1>
 
-        {/* Hero Editorial Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-basin-midnight/80 border border-basin-cyan/30 text-[11px] font-mono uppercase tracking-widest text-basin-cyanAccent backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-basin-cyan animate-pulse" />
-            <span>Hydrological Intelligence Research</span>
+            {/* Pill Buttons: Matches Screenshot 5 exactly [Paper] [Blog] [Flood Hub] */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <Link href="/model" className="google-pill text-sm py-2 px-6 shadow-md">
+                Our Model
+              </Link>
+              <Link href="/test" className="google-pill text-sm py-2 px-6 shadow-md">
+                Test the Model
+              </Link>
+              <Link href="/catchments" className="google-pill text-sm py-2 px-6 shadow-md">
+                Catchment Explorer
+              </Link>
+            </div>
           </div>
+        </HeroVideo>
+      </section>
 
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-light tracking-tight text-white uppercase font-sans mb-6">
-            Predict Beyond <br className="hidden sm:inline" />
-            <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-basin-cyanAccent">
-              The Basin.
-            </span>
-          </h1>
+      {/* =========================================================================
+          SECTION 2 — EDITORIAL STORYTELLING (Matches Screenshot 3 exactly)
+          ========================================================================= */}
+      <section className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        <h2 className="text-3xl sm:text-5xl font-normal text-[#202124] tracking-tight leading-[1.15] mb-8 font-sans">
+          Using AI to make critical river-discharge forecasting universally accessible
+        </h2>
 
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-300 font-normal leading-relaxed mb-10">
-            Hydrology-informed machine learning for river-discharge forecasting and high-flow-risk analysis across
-            geographically unfamiliar catchments.
+        <div className="text-base sm:text-lg text-[#3c4043] leading-relaxed space-y-6 font-normal">
+          <p>
+            Every year, floods and extreme river discharge cause thousands of fatalities worldwide, disrupt the lives of
+            millions, and cause significant financial damages. To ensure that{" "}
+            <Link href="/problem" className="editorial-link">
+              no one is surprised
+            </Link>{" "}
+            by these hydrological extremes and to help communities better prepare, BASINSHIFT has developed
+            hydrology-informed machine learning models to forecast{" "}
+            <Link href="/model" className="editorial-link">
+              river discharge
+            </Link>{" "}
+            and{" "}
+            <Link href="/evaluation" className="editorial-link">
+              high-flow risk
+            </Link>{" "}
+            across unfamiliar catchments.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/problem"
-              className="w-full sm:w-auto px-6 py-3.5 text-xs font-mono font-medium uppercase tracking-wider text-white bg-basin-surface hover:bg-basin-card border border-basin-borderLight rounded transition-all flex items-center justify-center gap-2 group"
-            >
-              <span>Explore the Platform</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </Link>
+          <p>
+            Our state-of-the-art models deliver accurate, timely information, empowering researchers, water authorities,
+            and disaster managers to respond to crises and keep communities informed. By coupling physical linear
+            reservoir routing with regularized gradient-boosted residual correction, our technology generalizes beyond the
+            basins a model has observed during training.
+          </p>
 
-            <Link
-              href="/test"
-              className="w-full sm:w-auto px-6 py-3.5 text-xs font-mono font-medium uppercase tracking-wider text-white bg-basin-teal hover:bg-basin-teal/90 border border-basin-cyan/50 rounded shadow-lg shadow-basin-teal/20 transition-all flex items-center justify-center gap-2"
-            >
-              <Activity className="w-4 h-4 text-basin-cyanAccent" />
-              <span>Test the Model</span>
+          <p>
+            Our forecasting models are part of the open hydrological research initiative for planetary water intelligence,
+            benchmarked against verified data from the{" "}
+            <Link href="/resources" className="editorial-link">
+              CAMELS benchmark
+            </Link>{" "}
+            and the{" "}
+            <Link href="/catchments" className="editorial-link">
+              USGS streamgage network
             </Link>
-          </div>
-        </div>
-
-        {/* Ambient bottom scroll indicator */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 text-slate-500 font-mono text-[10px] tracking-widest uppercase">
-          <span>Scroll to examine</span>
-          <div className="w-4 h-6 rounded-full border border-slate-600 flex items-start justify-center p-1">
-            <div className="w-1 h-1.5 bg-basin-cyan rounded-full animate-bounce" />
-          </div>
+            .
+          </p>
         </div>
       </section>
 
-      {/* SECTION 2 — THE CHALLENGE */}
-      <section className="py-24 border-t border-basin-border/50 bg-basin-midnight">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-6 space-y-6">
-              <div className="scientific-badge">Hydrological Heterogeneity</div>
-              <h2 className="text-3xl sm:text-4xl font-normal text-white tracking-tight leading-tight">
-                Every catchment tells a different story.
-              </h2>
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                River discharge depends on rainfall, catchment characteristics, antecedent soil moisture, storage, and
-                channel routing. Similar environmental inputs can produce vastly different river responses, making
-                reliable prediction across unfamiliar catchments fundamentally difficult.
+      {/* =========================================================================
+          SECTION 3 — SUBMERGED TREES / FLOODWATER VIDEO (Matches Screenshot 4 exactly)
+          ========================================================================= */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+        <div className="relative rounded-2xl overflow-hidden shadow-sm h-[380px] sm:h-[460px] md:h-[500px]">
+          {/* Real submerged floodwaters photo / video */}
+          <Image
+            src="/media/floods/submerged_floodwaters.jpg"
+            alt="Flooded river and submerged trees with high water levels"
+            fill
+            className="object-cover object-center filter brightness-[0.88] contrast-[1.05]"
+          />
+
+          {/* Centered Editorial Quote directly over floodwater (matching Screenshot 4) */}
+          <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+            <h3 className="max-w-2xl text-2xl sm:text-4xl font-normal text-white drop-shadow-lg leading-snug font-sans">
+              To help researchers and water managers access vital discharge forecasts when time is of the essence
+            </h3>
+          </div>
+
+          {/* Pause button in bottom right corner (Screenshot 4) */}
+          <button
+            onClick={() => setIsPlayingBreakout(!isPlayingBreakout)}
+            className="video-pause-btn absolute bottom-6 right-6 z-20"
+            aria-label="Pause media"
+          >
+            {isPlayingBreakout ? <Pause className="w-3.5 h-3.5 fill-white" /> : <Play className="w-3.5 h-3.5 fill-white" />}
+          </button>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 4 — CATCHMENT EXPLORER / FLOOD HUB (Matches Screenshot 1 exactly)
+          ========================================================================= */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div className="max-w-4xl space-y-5 mb-10">
+          <h2 className="text-3xl sm:text-4xl font-normal text-[#202124] tracking-tight font-sans">
+            Catchment Explorer
+          </h2>
+
+          <p className="text-base sm:text-lg text-[#3c4043] leading-relaxed">
+            <strong className="text-[#202124] font-medium">Catchment Explorer</strong> is a visual resource that displays
+            drainage maps, discharge trends, and multi-day flood forecasts based on our hydrology-informed AI models and
+            verified benchmark data sources. It is designed to meet the needs of researchers, hydrological agencies, and
+            communities directly at risk. With forecasts up to 7 days in advance (+1d, +3d, +7d) for riverine basins, users
+            are able to assess the situation to take timely action. All benchmark data in BASINSHIFT is publicly
+            available for reproducible research.
+          </p>
+
+          <p className="text-base sm:text-lg text-[#3c4043] leading-relaxed">
+            These hydrology-informed forecasts evaluate generalization across both familiar and geographically unfamiliar
+            ungauged basins.
+          </p>
+
+          <p className="text-base sm:text-lg text-[#3c4043] leading-relaxed">
+            We also provide researchers and experts with additional data — via an{" "}
+            <Link href="/test" className="editorial-link">
+              API
+            </Link>
+            , the open-sourced{" "}
+            <Link href="/model" className="editorial-link">
+              hydrology model
+            </Link>
+            , the{" "}
+            <Link href="/resources" className="editorial-link">
+              CAMELS reanalysis dataset
+            </Link>{" "}
+            and the{" "}
+            <Link href="/evaluation" className="editorial-link">
+              generalization benchmark suite
+            </Link>
+            .
+          </p>
+        </div>
+
+        {/* Interactive Map Presentation Container (Screenshot 1) */}
+        <div className="google-card overflow-hidden shadow-sm">
+          {/* Header inside Map container */}
+          <div className="p-4 bg-white border-b border-[#dadce0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="font-medium text-sm text-[#202124]">BASINSHIFT Explorer</span>
+              <span className="text-xs text-[#5f6368]">• Verified Benchmark Streamgages</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link
+                href="/test"
+                className="text-xs font-medium text-[#1a73e8] hover:text-[#174ea6] flex items-center gap-1"
+              >
+                <span>Upload Catchment History</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Real Leaflet Map */}
+          <div className="h-[520px]">
+            <CatchmentMap />
+          </div>
+        </div>
+
+        {/* Caption underneath Map (matching Screenshot 1: 'Flood Hub currently covers...') */}
+        <p className="text-center text-xs text-[#5f6368] mt-4 font-normal">
+          <em className="text-[#202124] font-medium not-italic">Catchment Explorer</em> currently benchmarks against
+          verified USGS streamgage stations and CAMELS drainage basins.
+        </p>
+      </section>
+
+      {/* =========================================================================
+          SECTION 5 — ALERTS AND NOTIFICATIONS (Matches Screenshot 2 exactly)
+          ========================================================================= */}
+      <section className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto border-t border-[#dadce0]/60">
+        <h2 className="text-3xl sm:text-4xl font-normal text-[#202124] tracking-tight mb-4 font-sans">
+          Alerts and notifications
+        </h2>
+        <p className="text-base sm:text-lg text-[#3c4043] leading-relaxed mb-12">
+          In addition to continuous discharge trajectories, BASINSHIFT computes calibrated high-flow exceedance
+          probabilities against regional Q95 thresholds to help researchers and water managers anticipate severe crest
+          events.
+        </p>
+
+        {/* Centered Phone Notification Mockup Card (Screenshot 2) */}
+        <div className="flex justify-center">
+          <div className="w-full max-w-md bg-white border border-[#dadce0] rounded-2xl shadow-lg overflow-hidden">
+            {/* Card Content Header */}
+            <div className="p-6 space-y-4">
+              <p className="text-sm sm:text-base text-[#202124] leading-relaxed">
+                By tomorrow morning, Neversink River is expected to rise compared to this morning. High-flow exceedance
+                probability elevated to 42% (Q95 threshold: 14.82 mm/day). Please be cautious if monitoring the riverfront.
               </p>
+
+              <div className="text-xs text-[#5f6368]">4 hours ago</div>
+
               <div className="pt-2">
                 <Link
-                  href="/problem"
-                  className="inline-flex items-center gap-2 text-xs font-mono text-basin-cyanAccent hover:text-white transition-colors uppercase tracking-wider"
+                  href="/results"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#f1f3f4] hover:bg-[#e8eaed] text-[#202124] text-xs font-medium rounded-full transition-colors"
                 >
-                  <span>Examine the Physical Mechanisms</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>See more in Forecast Results</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="relative rounded-lg overflow-hidden border border-basin-border group">
+            {/* Bottom Forecast Snippet (Screenshot 2) */}
+            <div className="border-t border-[#dadce0] bg-[#f8f9fa] p-4">
+              <div className="text-xs font-medium text-[#202124] mb-2">
+                Discharge prediction for tomorrow morning
+              </div>
+              <div className="relative h-44 rounded-lg overflow-hidden border border-[#dadce0]">
                 <Image
                   src="/media/rivers/river_floodplain_meander.jpg"
-                  alt="River channel meander and natural floodplain storage"
-                  width={800}
-                  height={500}
-                  className="w-full h-80 object-cover filter contrast-[1.05] group-hover:scale-105 transition-transform duration-700"
+                  alt="Flood prediction catchment river channel"
+                  fill
+                  className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-basin-darkest/90 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <div className="text-[11px] font-mono text-basin-cyanAccent uppercase">
-                    Active Floodplain & Channel Storage
-                  </div>
-                  <div className="text-xs text-slate-300 mt-0.5">
-                    Storage dynamics delay and attenuate hydrograph crest peaks.
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+                  <div className="text-white text-xs font-mono">
+                    Station 01434000 • +1d Crest: 5.24 mm/day
                   </div>
                 </div>
               </div>
@@ -112,176 +257,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 3 — OUR APPROACH */}
-      <section className="py-24 border-t border-basin-border/50 bg-basin-darkest">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <div className="scientific-badge">Architecture Overview</div>
-            <h2 className="text-3xl sm:text-4xl font-normal text-white tracking-tight">
-              Connecting hydrological processes with machine learning.
-            </h2>
-            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-              BASINSHIFT couples physics-inspired linear reservoir dynamics with machine learning residual correction to
-              isolate transferable catchment dynamics from localized training bias.
-            </p>
-          </div>
-
-          {/* Sequential Process Flow Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="editorial-card p-6 flex flex-col justify-between">
-              <div>
-                <div className="w-8 h-8 rounded border border-basin-cyan/40 bg-basin-surface flex items-center justify-center text-basin-cyanAccent mb-4">
-                  <Waves className="w-4 h-4" />
-                </div>
-                <div className="text-[11px] font-mono text-basin-cyan uppercase tracking-wider">Stage 01</div>
-                <h3 className="text-base font-semibold text-white mt-1 mb-2">Hydrological Representation</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Four linear reservoirs represent fast surface runoff, interflow, percolation, and slow baseflow storage
-                  timescales alongside antecedent soil moisture.
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-basin-border/40 text-[11px] font-mono text-slate-500">
-                4-Reservoir Storage Routing
-              </div>
-            </div>
-
-            <div className="editorial-card p-6 flex flex-col justify-between">
-              <div>
-                <div className="w-8 h-8 rounded border border-basin-cyan/40 bg-basin-surface flex items-center justify-center text-basin-cyanAccent mb-4">
-                  <Cpu className="w-4 h-4" />
-                </div>
-                <div className="text-[11px] font-mono text-basin-cyan uppercase tracking-wider">Stage 02</div>
-                <h3 className="text-base font-semibold text-white mt-1 mb-2">Ridge Base + Residual Trees</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Regularized Ridge regression fits a stable linear baseline, followed by LightGBM gradient-boosted trees
-                  learning nonlinear residual hydrograph corrections.
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-basin-border/40 text-[11px] font-mono text-slate-500">
-                Two-Stage Hybrid Framework
-              </div>
-            </div>
-
-            <div className="editorial-card p-6 flex flex-col justify-between">
-              <div>
-                <div className="w-8 h-8 rounded border border-basin-cyan/40 bg-basin-surface flex items-center justify-center text-basin-cyanAccent mb-4">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-                <div className="text-[11px] font-mono text-basin-cyan uppercase tracking-wider">Stage 03</div>
-                <h3 className="text-base font-semibold text-white mt-1 mb-2">Cross-Basin Generalization</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Explicit evaluation on catchments withheld entirely from training ensures predictions reflect genuine
-                  hydrological transfer rather than basin memorization.
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-basin-border/40 text-[11px] font-mono text-slate-500">
-                Out-of-Sample Spatial Testing
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-12 text-center">
-            <Link
-              href="/model"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded bg-basin-surface hover:bg-basin-card border border-basin-border text-xs font-mono text-slate-200 hover:text-white transition-colors"
-            >
-              <span>Inspect Full Mathematical Architecture</span>
-              <ArrowRight className="w-3.5 h-3.5 text-basin-cyanAccent" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 4 — WHY GENERALIZATION MATTERS */}
-      <section className="py-24 border-t border-basin-border/50 bg-basin-midnight">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-5 space-y-6">
-              <div className="scientific-badge">Spatial Distribution Shift</div>
-              <h2 className="text-3xl sm:text-4xl font-normal text-white tracking-tight leading-tight">
-                Beyond the basins a model has seen.
-              </h2>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                Standard hydrological models frequently achieve high scores simply by memorizing gauge-specific runoff
-                curves. When deployed to unmonitored or geographically separated basins, performance degrades sharply.
-              </p>
-              <p className="text-slate-400 text-xs leading-relaxed">
-                BASINSHIFT benchmarks both geographic generalization (unseen basins holdout) and temporal generalization
-                (chronological split holdout) without data leakage.
-              </p>
-              <div className="pt-2">
-                <Link
-                  href="/evaluation"
-                  className="inline-flex items-center gap-2 text-xs font-mono text-basin-cyanAccent hover:text-white transition-colors uppercase tracking-wider"
-                >
-                  <span>Review Benchmark Metrics</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </div>
-
-            <div className="lg:col-span-7">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
-                <div className="bg-basin-surface/70 border border-basin-border p-5 rounded-lg space-y-3">
-                  <div className="flex items-center justify-between text-basin-cyanAccent">
-                    <span className="text-[11px] uppercase tracking-wider">Familiar Catchments</span>
-                    <span className="w-2 h-2 rounded-full bg-basin-cyan" />
-                  </div>
-                  <div className="text-sm font-semibold text-white">In-Sample Calibration</div>
-                  <p className="text-slate-400 text-[11px] leading-relaxed">
-                    Observed discharge available during training. High localized correlation is expected but does not
-                    confirm transferable dynamics.
-                  </p>
-                  <div className="pt-2 text-[10px] text-slate-500 border-t border-basin-border/40">
-                    Baseline Metric: High Local Fit
-                  </div>
-                </div>
-
-                <div className="bg-basin-surface/70 border border-amber-500/40 p-5 rounded-lg space-y-3">
-                  <div className="flex items-center justify-between text-amber-400">
-                    <span className="text-[11px] uppercase tracking-wider">Unseen Catchments</span>
-                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                  </div>
-                  <div className="text-sm font-semibold text-white">Out-of-Sample Holdout</div>
-                  <p className="text-slate-400 text-[11px] leading-relaxed">
-                    Excluded completely from training. Evaluates if physics-informed features transfer across distinct
-                    drainage areas and geologic formations.
-                  </p>
-                  <div className="pt-2 text-[10px] text-amber-400/80 border-t border-basin-border/40">
-                    Generalization Target: Transferability
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 5 — FINAL CALL TO ACTION */}
-      <section className="py-24 border-t border-basin-border/50 bg-basin-darkest relative overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
-          <h2 className="text-3xl sm:text-5xl font-light text-white tracking-tight uppercase">
-            Explore the BASINSHIFT <br />
-            <span className="font-semibold text-basin-cyanAccent">Forecasting Workspace.</span>
+      {/* =========================================================================
+          SECTION 6 — BOTTOM CTA (Clean Google Research style)
+          ========================================================================= */}
+      <section className="py-20 bg-[#f8f9fa] border-t border-[#dadce0]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <h2 className="text-2xl sm:text-4xl font-normal text-[#202124] tracking-tight">
+            Explore the BASINSHIFT Forecasting Platform
           </h2>
-          <p className="max-w-xl mx-auto text-slate-300 text-sm sm:text-base leading-relaxed">
-            Upload catchment meteorological series or select verified benchmark basins to evaluate multi-day discharge
-            predictions and high-flow exceedance risk.
+          <p className="text-base text-[#5f6368] max-w-xl mx-auto">
+            Test the two-stage hybrid model with catchment time series or explore verified benchmark basins.
           </p>
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/test"
-              className="px-8 py-3.5 text-xs font-mono font-medium uppercase tracking-wider text-white bg-basin-teal hover:bg-basin-teal/90 border border-basin-cyan/50 rounded shadow-lg transition-all flex items-center gap-2"
-            >
-              <Activity className="w-4 h-4 text-basin-cyanAccent" />
-              <span>Launch Testing Laboratory</span>
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <Link href="/test" className="google-pill text-sm py-2.5 px-6 shadow-sm">
+              Test the Model
             </Link>
-            <Link
-              href="/catchments"
-              className="px-6 py-3.5 text-xs font-mono font-medium uppercase tracking-wider text-slate-300 hover:text-white bg-basin-surface hover:bg-basin-card border border-basin-border rounded transition-all flex items-center gap-2"
-            >
-              <Compass className="w-4 h-4 text-slate-400" />
-              <span>Catchment Explorer Map</span>
+            <Link href="/model" className="google-pill-light text-sm py-2.5 px-6">
+              Read Model Architecture
             </Link>
           </div>
         </div>
