@@ -30,6 +30,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12"
 ]
 dependencies = [
+"fastapi",
 "pandas==2.2.3",
 "joblib",
 "numpy",
