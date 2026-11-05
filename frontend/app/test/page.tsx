@@ -1,5 +1,5 @@
 "use client";
-import { checkBackendHealth, submitPrediction, HealthCheckResult } from "@/lib/api";
+
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -16,7 +16,12 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { FeatureMode } from "@/lib/types";
-import { checkBackendHealth, submitPrediction, HealthCheckResult } from "@/lib/api";
+import {
+  https://basinshift-alpha.vercel.app,
+  checkBackendHealth,
+  submitPrediction,
+  HealthCheckResult,
+} from "@/lib/api";
 import { saveActiveForecast, clearActiveForecast } from "@/lib/store";
 
 interface ParsedDataset {
