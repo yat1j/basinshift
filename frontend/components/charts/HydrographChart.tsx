@@ -100,18 +100,15 @@ export default function HydrographChart({
   });
 
   return (
-    <div className="w-full bg-white border border-[#dadce0] rounded-xl p-5 sm:p-6 select-none relative shadow-sm">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#dadce0] gap-3">
+    <div className="glass-card p-6 space-y-4">
+      {/* Header and Legend */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 gap-4">
         <div>
-          <h3 className="text-base font-medium text-[#202124] tracking-tight flex items-center gap-2">
-            <span>Hydrograph: River Discharge Trajectory</span>
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#f1f3f4] text-[#3c4043] border border-[#dadce0]">
-              {mode === "gauged" ? "Gauged Mode" : "Ungauged / PUB"}
-            </span>
+          <h3 className="text-base font-medium text-white">
+            Catchment Discharge Hydrograph & Rainfall Hyetograph
           </h3>
-          <p className="text-xs text-[#5f6368] mt-0.5">
-            Historical response and multi-day forecast crests (+1d, +3d, +7d) against regional Q95 threshold
+          <p className="text-xs text-white/60 mt-0.5">
+            Normalized runoff depth (mm/day) against inverted daily precipitation (mm)
           </p>
         </div>
 
@@ -119,27 +116,27 @@ export default function HydrographChart({
         <div className="flex flex-wrap items-center gap-4 text-xs font-mono">
           {mode === "gauged" && (
             <div className="flex items-center gap-1.5">
-              <span className="w-3.5 h-0.5 bg-[#5f6368]" />
-              <span className="text-[#5f6368]">Observed</span>
+              <span className="w-3.5 h-0.5 bg-white/60" />
+              <span className="text-white/60">Observed</span>
             </div>
           )}
           <div className="flex items-center gap-1.5">
-            <span className="w-3.5 h-0.5 bg-[#1a73e8] border-t-2 border-dashed border-[#1a73e8]" />
-            <span className="text-[#1a73e8] font-bold">Forecast</span>
+            <span className="w-3.5 h-0.5 bg-sky-400 border-t-2 border-dashed border-sky-400" />
+            <span className="text-sky-300 font-bold">Forecast</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-3.5 h-0.5 border-t border-dashed border-[#e37400]" />
-            <span className="text-[#e37400]">Q95 ({q95Threshold} mm)</span>
+            <span className="w-3.5 h-0.5 border-t border-dashed border-amber-400" />
+            <span className="text-amber-400">Q95 ({q95Threshold} mm)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 bg-[#d2e3fc] border border-[#1a73e8] rounded-sm" />
-            <span className="text-[#5f6368]">Precipitation</span>
+            <span className="w-2.5 h-2.5 bg-sky-500/20 border border-sky-400/40 rounded-sm" />
+            <span className="text-white/60">Precipitation</span>
           </div>
         </div>
       </div>
 
       {/* SVG Canvas */}
-      <div className="relative mt-4 overflow-x-auto">
+      <div className="relative mt-4 overflow-x-auto bg-black/40 rounded-xl p-2 border border-white/5">
         <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto min-w-[620px] overflow-visible">
           {/* Grid lines */}
           {[0, 0.25, 0.5, 0.75, 1.0].map((fraction, idx) => {
@@ -152,11 +149,11 @@ export default function HydrographChart({
                   y1={y}
                   x2={width - margin.right}
                   y2={y}
-                  stroke="#e8eaed"
+                  stroke="rgba(255, 255, 255, 0.08)"
                   strokeWidth="1"
                   strokeDasharray="3 3"
                 />
-                <text x={margin.left - 8} y={y + 3} textAnchor="end" fill="#747775" fontSize="10" fontFamily="monospace">
+                <text x={margin.left - 8} y={y + 3} textAnchor="end" fill="rgba(255, 255, 255, 0.4)" fontSize="10" fontFamily="monospace">
                   {qVal}
                 </text>
               </g>
@@ -168,7 +165,7 @@ export default function HydrographChart({
             if (!pt.precipitation_mm_day || pt.precipitation_mm_day <= 0) return null;
             const barH = getPrecipY(pt.precipitation_mm_day);
             const x = getX(i) - 2;
-            return <rect key={`p-${i}`} x={x} y={margin.top} width="4" height={barH} fill="#aecbfa" rx="1" />;
+            return <rect key={`p-${i}`} x={x} y={margin.top} width="4" height={barH} fill="rgba(56, 189, 248, 0.25)" rx="1" />;
           })}
 
           {/* Q95 Reference Line */}
@@ -177,7 +174,7 @@ export default function HydrographChart({
             y1={getY(q95Threshold)}
             x2={width - margin.right}
             y2={getY(q95Threshold)}
-            stroke="#e37400"
+            stroke="#f59e0b"
             strokeWidth="1.5"
             strokeDasharray="4 4"
           />
@@ -185,7 +182,7 @@ export default function HydrographChart({
             x={width - margin.right - 4}
             y={getY(q95Threshold) - 5}
             textAnchor="end"
-            fill="#e37400"
+            fill="#f59e0b"
             fontSize="10"
             fontFamily="monospace"
             fontWeight="bold"
@@ -199,7 +196,7 @@ export default function HydrographChart({
             y1={margin.top}
             x2={originX}
             y2={margin.top + plotHeight}
-            stroke="#1a73e8"
+            stroke="rgba(255, 255, 255, 0.5)"
             strokeWidth="1.5"
             strokeDasharray="2 2"
           />
@@ -207,7 +204,7 @@ export default function HydrographChart({
             x={originX}
             y={margin.top - 8}
             textAnchor="middle"
-            fill="#1a73e8"
+            fill="#ffffff"
             fontSize="10"
             fontFamily="monospace"
             fontWeight="bold"
@@ -217,14 +214,14 @@ export default function HydrographChart({
 
           {/* Gauged Observed Discharge Line */}
           {mode === "gauged" && (
-            <path d={observedPath} fill="none" stroke="#5f6368" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d={observedPath} fill="none" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           )}
 
           {/* Forecast Trajectory Line */}
           <path
             d={forecastPath}
             fill="none"
-            stroke="#1a73e8"
+            stroke="#38bdf8"
             strokeWidth="2.5"
             strokeDasharray="4 3"
             strokeLinecap="round"
@@ -257,7 +254,7 @@ export default function HydrographChart({
                   cx={cx}
                   cy={cy}
                   r="6"
-                  className={isExceedance ? "fill-[#e37400]" : "fill-[#1a73e8]"}
+                  className={isExceedance ? "fill-amber-500" : "fill-sky-400"}
                   stroke="#ffffff"
                   strokeWidth="2"
                 />
@@ -265,7 +262,7 @@ export default function HydrographChart({
                   x={cx}
                   y={cy - 10}
                   textAnchor="middle"
-                  fill="#202124"
+                  fill="#ffffff"
                   fontSize="11"
                   fontWeight="bold"
                   fontFamily="monospace"
@@ -282,15 +279,15 @@ export default function HydrographChart({
             y1={margin.top + plotHeight}
             x2={width - margin.right}
             y2={margin.top + plotHeight}
-            stroke="#dadce0"
+            stroke="rgba(255, 255, 255, 0.2)"
             strokeWidth="1"
           />
           {history.length > 0 && (
-            <text x={margin.left} y={margin.top + plotHeight + 18} textAnchor="start" fill="#747775" fontSize="10" fontFamily="monospace">
+            <text x={margin.left} y={margin.top + plotHeight + 18} textAnchor="start" fill="rgba(255, 255, 255, 0.5)" fontSize="10" fontFamily="monospace">
               {history[0].date}
             </text>
           )}
-          <text x={originX} y={margin.top + plotHeight + 18} textAnchor="middle" fill="#1a73e8" fontSize="10" fontFamily="monospace">
+          <text x={originX} y={margin.top + plotHeight + 18} textAnchor="middle" fill="#ffffff" fontSize="10" fontFamily="monospace">
             {forecastOrigin.split("T")[0]}
           </text>
 
@@ -300,7 +297,7 @@ export default function HydrographChart({
             y="18"
             transform="rotate(-90)"
             textAnchor="middle"
-            fill="#5f6368"
+            fill="rgba(255, 255, 255, 0.5)"
             fontSize="11"
             fontFamily="monospace"
           >
@@ -311,18 +308,18 @@ export default function HydrographChart({
         {/* Tooltip */}
         {hoveredPoint && (
           <div
-            className="absolute z-30 pointer-events-none px-3 py-2 bg-white border border-[#dadce0] text-[#202124] rounded-lg shadow-lg font-mono text-xs"
+            className="absolute z-30 pointer-events-none px-3 py-2 glass-card border border-white/20 text-white rounded-lg shadow-xl font-mono text-xs"
             style={{
               left: `${(hoveredPoint.x / width) * 100}%`,
               top: `${Math.max(10, (hoveredPoint.y / height) * 100 - 25)}%`,
               transform: "translate(-50%, -100%)",
             }}
           >
-            <div className="font-bold text-[#1a73e8]">
+            <div className="font-bold text-sky-400">
               {hoveredPoint.type === "forecast" ? `Forecast (+${hoveredPoint.horizon}d)` : "Observed Flow"}
             </div>
-            <div className="text-[#5f6368] text-[11px]">{hoveredPoint.date}</div>
-            <div className="mt-1 font-bold text-[#202124]">
+            <div className="text-white/60 text-[11px]">{hoveredPoint.date}</div>
+            <div className="mt-1 font-bold text-white">
               {hoveredPoint.discharge !== null ? `${hoveredPoint.discharge} mm/day` : "N/A (Ungauged)"}
             </div>
           </div>
@@ -330,8 +327,8 @@ export default function HydrographChart({
       </div>
 
       {mode === "ungauged" && (
-        <div className="mt-3 p-3 bg-[#f8f9fa] border border-[#dadce0] rounded-lg text-xs text-[#5f6368] leading-relaxed">
-          <strong className="text-[#202124]">Ungauged / PUB Mode:</strong> Historical gauge measurements are unavailable
+        <div className="mt-3 p-3 bg-white/[0.03] border border-white/10 rounded-lg text-xs text-white/60 leading-relaxed">
+          <strong className="text-white">Ungauged / PUB Mode:</strong> Historical gauge measurements are unavailable
           at this catchment and are omitted to avoid data fabrication. Predictions rely solely on meteorological forcings
           and linear reservoir routing.
         </div>

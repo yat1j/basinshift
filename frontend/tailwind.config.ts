@@ -9,21 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        google: {
-          bg: "#ffffff",
-          surface: "#f8f9fa",
-          surfaceHover: "#f1f3f4",
-          border: "#dadce0",
-          borderLight: "#e8eaed",
-          text: "#202124",
-          textMuted: "#3c4043",
-          textSecondary: "#5f6368",
-          blue: "#1a73e8",
-          blueHover: "#174ea6",
-          pill: "#1f1f1f",
-          pillHover: "#000000",
-          amber: "#e37400",
-          green: "#137333",
+        dark: {
+          bg: "#000000",
+          card: "#0d0d0d",
+          surface: "#141414",
+          border: "rgba(255, 255, 255, 0.12)",
+          borderLight: "rgba(255, 255, 255, 0.2)",
+          text: "#ffffff",
+          textMuted: "#a1a1aa",
+          textSubtle: "#71717a",
         },
       },
       fontFamily: {
@@ -45,9 +39,6 @@ const config: Config = {
           "Consolas",
           "monospace",
         ],
-      },
-      borderRadius: {
-        pill: "9999px",
       },
     },
   },

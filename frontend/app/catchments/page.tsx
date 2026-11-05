@@ -10,17 +10,17 @@ export default function CatchmentsPage() {
   const [selectedCatchment, setSelectedCatchment] = useState<CatchmentGeoFeature | null>(null);
 
   return (
-    <div className="flex flex-col min-h-screen bg-white text-[#202124] pb-24">
+    <div className="flex flex-col min-h-screen bg-black text-white pb-24">
       {/* Editorial Header */}
-      <section className="py-16 border-b border-[#dadce0] bg-[#f8f9fa]">
+      <section className="py-16 border-b border-white/10 bg-[#060606]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-xs uppercase tracking-wider font-semibold text-[#1a73e8] mb-2">
+          <div className="text-xs uppercase tracking-wider font-semibold text-white/60 mb-2 font-mono">
             Geospatial Observation
           </div>
-          <h1 className="text-3xl sm:text-5xl font-normal text-[#202124] tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-normal text-white tracking-tight font-sans">
             Catchment Explorer
           </h1>
-          <p className="text-base text-[#5f6368] mt-3 max-w-2xl leading-relaxed">
+          <p className="text-base text-white/70 mt-3 max-w-2xl leading-relaxed font-normal">
             Interactive observation of verified USGS streamflow gauging stations and CAMELS benchmark watersheds.
             Explore drainage topography, elevation gradients, and spatial holdouts.
           </p>
@@ -32,17 +32,17 @@ export default function CatchmentsPage() {
         <CatchmentMap onSelectCatchment={(f) => setSelectedCatchment(f)} />
 
         {/* Verification Note */}
-        <div className="p-4 bg-[#f8f9fa] border border-[#dadce0] rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#5f6368]">
+        <div className="p-4 glass-card border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-white/70">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#137333] shrink-0" />
+            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
             <span>
-              <strong>Data Verification:</strong> All coordinates and drainage areas are verified against the USGS
+              <strong className="text-white">Data Verification:</strong> All coordinates and drainage areas are verified against the USGS
               National Water Information System (NWIS).
             </span>
           </div>
           <Link
             href="/resources"
-            className="text-[#1a73e8] hover:text-[#174ea6] flex items-center gap-1 font-medium shrink-0"
+            className="text-white/80 hover:text-white flex items-center gap-1 font-medium shrink-0 editorial-link"
           >
             <span>Review NWIS Schema</span>
             <ExternalLink className="w-3.5 h-3.5" />
@@ -50,13 +50,13 @@ export default function CatchmentsPage() {
         </div>
 
         {/* Catalog Table */}
-        <div className="google-card p-6 space-y-4">
-          <h3 className="text-base font-medium text-[#202124]">
+        <div className="glass-card p-6 space-y-4">
+          <h3 className="text-base font-medium text-white font-sans">
             Verified Benchmark Stations Catalog
           </h3>
-          <div className="overflow-x-auto border border-[#dadce0] rounded-lg">
+          <div className="overflow-x-auto border border-white/10 rounded-xl">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#f8f9fa] text-[#5f6368] border-b border-[#dadce0]">
+              <thead className="bg-white/5 text-white/60 border-b border-white/10 font-mono">
                 <tr>
                   <th className="p-3">USGS Station ID</th>
                   <th className="p-3">River & Location</th>
@@ -68,73 +68,73 @@ export default function CatchmentsPage() {
                   <th className="p-3 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#dadce0] text-[#3c4043]">
-                <tr className="hover:bg-[#f8f9fa]">
-                  <td className="p-3 font-mono font-medium text-[#1a73e8]">01434000</td>
-                  <td className="p-3 font-medium text-[#202124]">Neversink River near Claryville, NY</td>
+              <tbody className="divide-y divide-white/5 text-white/80 font-sans">
+                <tr className="hover:bg-white/[0.02]">
+                  <td className="p-3 font-mono font-medium text-sky-400">01434000</td>
+                  <td className="p-3 font-medium text-white">Neversink River near Claryville, NY</td>
                   <td className="p-3">02 - Mid-Atlantic</td>
-                  <td className="p-3">172.5 km²</td>
-                  <td className="p-3">680 m</td>
-                  <td className="p-3 text-[#e37400] font-medium">14.82 mm/d</td>
-                  <td className="p-3 text-[#137333] font-medium">Calibration Baseline</td>
+                  <td className="p-3 font-mono">172.5 km²</td>
+                  <td className="p-3 font-mono">680 m</td>
+                  <td className="p-3 text-amber-400 font-mono font-medium">14.82 mm/d</td>
+                  <td className="p-3 text-emerald-400 font-medium">Calibration Baseline</td>
                   <td className="p-3 text-right">
                     <Link
                       href="/test?catchment=01434000"
-                      className="google-pill-light text-xs py-1 px-3 shadow-none inline-block"
+                      className="glass-pill text-xs py-1 px-3 shadow-none inline-block"
                     >
                       Forecast
                     </Link>
                   </td>
                 </tr>
 
-                <tr className="hover:bg-[#f8f9fa]">
-                  <td className="p-3 font-mono font-medium text-[#1a73e8]">01427510</td>
-                  <td className="p-3 font-medium text-[#202124]">Lackawaxen River at Rowland, PA</td>
+                <tr className="hover:bg-white/[0.02]">
+                  <td className="p-3 font-mono font-medium text-sky-400">01427510</td>
+                  <td className="p-3 font-medium text-white">Lackawaxen River at Rowland, PA</td>
                   <td className="p-3">02 - Mid-Atlantic</td>
-                  <td className="p-3">412.3 km²</td>
-                  <td className="p-3">435 m</td>
-                  <td className="p-3 text-[#e37400] font-medium">12.45 mm/d</td>
-                  <td className="p-3 text-[#137333] font-medium">Calibration Baseline</td>
+                  <td className="p-3 font-mono">412.3 km²</td>
+                  <td className="p-3 font-mono">435 m</td>
+                  <td className="p-3 text-amber-400 font-mono font-medium">12.45 mm/d</td>
+                  <td className="p-3 text-emerald-400 font-medium">Calibration Baseline</td>
                   <td className="p-3 text-right">
                     <Link
                       href="/test?catchment=01427510"
-                      className="google-pill-light text-xs py-1 px-3 shadow-none inline-block"
+                      className="glass-pill text-xs py-1 px-3 shadow-none inline-block"
                     >
                       Forecast
                     </Link>
                   </td>
                 </tr>
 
-                <tr className="hover:bg-[#f8f9fa]">
-                  <td className="p-3 font-mono font-medium text-[#1a73e8]">01570500</td>
-                  <td className="p-3 font-medium text-[#202124]">Susquehanna River at Harrisburg, PA</td>
+                <tr className="hover:bg-white/[0.02]">
+                  <td className="p-3 font-mono font-medium text-sky-400">01570500</td>
+                  <td className="p-3 font-medium text-white">Susquehanna River at Harrisburg, PA</td>
                   <td className="p-3">02 - Mid-Atlantic</td>
-                  <td className="p-3">62,419.0 km²</td>
-                  <td className="p-3">310 m</td>
-                  <td className="p-3 text-[#e37400] font-medium">9.87 mm/d</td>
-                  <td className="p-3 text-[#1a73e8] font-medium">Temporal Holdout</td>
+                  <td className="p-3 font-mono">62,419.0 km²</td>
+                  <td className="p-3 font-mono">310 m</td>
+                  <td className="p-3 text-amber-400 font-mono font-medium">9.87 mm/d</td>
+                  <td className="p-3 text-sky-300 font-medium">Temporal Holdout</td>
                   <td className="p-3 text-right">
                     <Link
                       href="/test?catchment=01570500"
-                      className="google-pill-light text-xs py-1 px-3 shadow-none inline-block"
+                      className="glass-pill text-xs py-1 px-3 shadow-none inline-block"
                     >
                       Forecast
                     </Link>
                   </td>
                 </tr>
 
-                <tr className="hover:bg-[#f8f9fa]">
-                  <td className="p-3 font-mono font-medium text-[#e37400]">01614000</td>
-                  <td className="p-3 font-medium text-[#202124]">Back Creek near Jones Springs, WV</td>
+                <tr className="hover:bg-white/[0.02]">
+                  <td className="p-3 font-mono font-medium text-amber-400">01614000</td>
+                  <td className="p-3 font-medium text-white">Back Creek near Jones Springs, WV</td>
                   <td className="p-3">02 - Appalachian</td>
-                  <td className="p-3">608.6 km²</td>
-                  <td className="p-3">390 m</td>
-                  <td className="p-3 text-[#e37400] font-medium">16.34 mm/d</td>
-                  <td className="p-3 text-[#e37400] font-medium">Unseen Basin Holdout</td>
+                  <td className="p-3 font-mono">608.6 km²</td>
+                  <td className="p-3 font-mono">390 m</td>
+                  <td className="p-3 text-amber-400 font-mono font-medium">16.34 mm/d</td>
+                  <td className="p-3 text-amber-400 font-medium">Unseen Basin Holdout</td>
                   <td className="p-3 text-right">
                     <Link
                       href="/test?catchment=01614000"
-                      className="google-pill-light text-xs py-1 px-3 shadow-none inline-block"
+                      className="glass-pill text-xs py-1 px-3 shadow-none inline-block"
                     >
                       Forecast
                     </Link>

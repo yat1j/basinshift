@@ -11,8 +11,8 @@ interface HeroVideoProps {
 }
 
 export default function HeroVideo({
-  videoSrc = "/media/videos/river_flow_hero.mp4",
-  posterSrc = "/media/satellite/river_sand_satellite.jpg",
+  videoSrc = "/media/videos/google_floods_hero.mp4",
+  posterSrc = "/media/satellite/google_flood_hero.png",
   className = "",
   children,
 }: HeroVideoProps) {
@@ -43,7 +43,7 @@ export default function HeroVideo({
   };
 
   return (
-    <div className={`relative w-full overflow-hidden ${className}`}>
+    <div className={`relative w-full overflow-hidden bg-black ${className}`}>
       {/* Background Video or Poster matching Google Research screenshot 5 */}
       {!hasError && !reducedMotion ? (
         <video
@@ -54,26 +54,26 @@ export default function HeroVideo({
           playsInline
           poster={posterSrc}
           onError={() => setHasError(true)}
-          className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.90] contrast-[1.05]"
+          className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.85] contrast-[1.1]"
         >
           <source src={videoSrc} type="video/mp4" />
         </video>
       ) : (
         <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center filter brightness-[0.92] contrast-[1.05]"
+          className="absolute inset-0 w-full h-full bg-cover bg-center filter brightness-[0.88] contrast-[1.1]"
           style={{ backgroundImage: `url(${posterSrc})` }}
         />
       )}
 
-      {/* Subtle light gradient for text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/20" />
+      {/* Atmospheric gradient overlay for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/40" />
 
       {/* Content Overlay */}
       <div className="relative z-10 w-full h-full flex flex-col justify-end p-8 sm:p-14">
         {children}
       </div>
 
-      {/* Minimalist Pause Button (matching bottom-right circle in screenshots 3, 4, 5) */}
+      {/* Minimalist Glass Pause Button (matching Screenshot 5) */}
       <button
         onClick={togglePlayback}
         className="video-pause-btn absolute bottom-6 right-6 z-20"

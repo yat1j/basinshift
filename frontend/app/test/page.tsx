@@ -48,117 +48,141 @@ function DatasetTestingContent() {
   const [loadingMessage, setLoadingMessage] = useState("");
   const [apiError, setApiError] = useState<string | null>(null);
   const [backendHealth, setBackendHealth] = useState<HealthCheckResult | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Query parameter pre-selection
   useEffect(() => {
-    checkBackendHealth().then(setBackendHealth);
-  }, []);
+    const sampleQuery = searchParams.get("sample");
+    const modeQuery = searchParams.get("mode") as FeatureMode | null;
+    const catchmentQuery = searchParams.get("catchment");
 
-  useEffect(() => {
-    const cid = searchParams.get("catchment");
-    if (cid) setCatchmentId(cid);
+    if (modeQuery) setOperatingMode(modeQuery);
+    if (catchmentQuery) setCatchmentId(catchmentQuery);
+
+    if (sampleQuery) {
+      loadBenchmarkSample(sampleQuery, modeQuery || "gauged");
+    }
+
+    checkBackendHealth().then((health) => setBackendHealth(health));
   }, [searchParams]);
 
-  const loadBenchmarkSample = async (sampleName: string, mode: FeatureMode) => {
-    setApiError(null);
+  const loadBenchmarkSample = async (filename: string, mode: FeatureMode) => {
     setIsLoading(true);
-    setLoadingMessage("Loading verified benchmark catchment records...");
+    setLoadingMessage(`Loading benchmark sample: ${filename}…`);
+    setApiError(null);
 
     try {
-      const res = await fetch(`/samples/${sampleName}`);
-      if (!res.ok) throw new Error("Failed to load benchmark file");
-      const text = await res.text();
-      parseCSVText(text, sampleName, mode);
+      const response = await fetch(`/samples/${filename}`);
+      if (!response.ok) {
+        throw new Error(`Failed to load benchmark file: ${response.statusText}`);
+      }
+      const text = await response.text();
+      parseCSVText(text, filename);
     } catch (err: any) {
-      setApiError(`Could not load benchmark sample: ${err.message}`);
+      setApiError(err.message || "Failed to load benchmark sample.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const parseCSVText = (csvText: string, filename: string, forcedMode?: FeatureMode) => {
-    setApiError(null);
-    const mode = forcedMode || operatingMode;
-
+  const parseCSVText = (csvText: string, filename: string) => {
     Papa.parse(csvText, {
       header: true,
+      dynamicTyping: true,
       skipEmptyLines: true,
       complete: (results) => {
-        const rows = results.data as Record<string, any>[];
-        const headers = results.meta.fields || [];
-
-        const headerCounts: Record<string, number> = {};
-        const duplicateHeaders: string[] = [];
-        headers.forEach((h) => {
-          headerCounts[h] = (headerCounts[h] || 0) + 1;
-          if (headerCounts[h] === 2) duplicateHeaders.push(h);
-        });
-
-        const hasDateCol = headers.includes("date");
-        const hasDischarge = headers.includes("observed_discharge_mm_day");
-
-        let missingValuesCount = 0;
-        let validDateStart: string | null = null;
-        let validDateEnd: string | null = null;
-
-        if (hasDateCol && rows.length > 0) {
-          validDateStart = rows[0].date;
-          validDateEnd = rows[rows.length - 1].date;
-          if (validDateEnd) setForecastOrigin(validDateEnd);
-        }
-
-        const validationErrors: string[] = [];
-        const validationWarnings: string[] = [];
-
-        if (!hasDateCol) {
-          validationErrors.push("Missing required 'date' column (format YYYY-MM-DD).");
-        }
-
-        if (rows.length < 30) {
-          validationErrors.push(
-            `Insufficient records (${rows.length} rows). The feature pipeline requires historical hydrological context.`
-          );
-        } else if (rows.length < 365) {
-          validationWarnings.push(
-            `Dataset contains ${rows.length} days of history. 365 days rolling context is recommended for optimal reservoir spin-up.`
-          );
-        }
-
-        if (duplicateHeaders.length > 0) {
-          validationErrors.push(`Duplicate column headers detected: ${duplicateHeaders.join(", ")}`);
-        }
-
-        if (mode === "gauged" && !hasDischarge) {
-          validationWarnings.push(
-            "Selected 'Gauged' mode, but 'observed_discharge_mm_day' column was not found. Switching to Ungauged/PUB mode is recommended."
-          );
-        }
-
-        rows.forEach((r) => {
-          headers.forEach((h) => {
-            if (r[h] === "" || r[h] === undefined || r[h] === null) {
-              missingValuesCount++;
-            }
-          });
-        });
-
-        setDataset({
-          filename,
-          filesize: `${(csvText.length / 1024).toFixed(1)} KB`,
-          rowCount: rows.length,
-          columns: headers,
-          dateRange: validDateStart && validDateEnd ? { start: validDateStart, end: validDateEnd } : null,
-          missingValuesCount,
-          duplicateHeaders,
-          hasDischargeColumn: hasDischarge,
-          rows,
-          validationErrors,
-          validationWarnings,
-        });
+        validateAndSetDataset(results.data as Record<string, any>[], results.meta.fields || [], filename, csvText.length);
       },
-      error: (err: any) => {
-        setApiError(`CSV Parsing Error: ${err?.message || String(err)}`);
+      error: (error: any) => {
+        setApiError(`CSV Parsing error: ${error?.message || String(error)}`);
       },
+    });
+  };
+
+  const validateAndSetDataset = (
+    rows: Record<string, any>[],
+    columns: string[],
+    filename: string,
+    byteLength: number
+  ) => {
+    const errors: string[] = [];
+    const warnings: string[] = [];
+
+    if (rows.length === 0) {
+      errors.push("Dataset contains no rows.");
+    }
+
+    // Check for date column
+    const dateCol = columns.find(
+      (c) => c.toLowerCase() === "date" || c.toLowerCase() === "datetime" || c.toLowerCase() === "time"
+    );
+
+    if (!dateCol) {
+      errors.push("Missing required 'date' column. Expected daily ISO timestamps (YYYY-MM-DD).");
+    }
+
+    // Check length
+    if (rows.length < 90) {
+      warnings.push(`Dataset length is ${rows.length} days. Hydrological reservoir spin-up requires ≥ 90 days (365 days recommended).`);
+    }
+
+    // Check for observed discharge column
+    const dischargeCol = columns.find(
+      (c) =>
+        c.toLowerCase().includes("discharge") ||
+        c.toLowerCase().includes("q_obs") ||
+        c.toLowerCase() === "q" ||
+        c.toLowerCase().includes("flow")
+    );
+
+    if (operatingMode === "gauged" && !dischargeCol) {
+      warnings.push("Operating mode set to Gauged, but no observed discharge column found. Switching to Ungauged/PUB mode.");
+      setOperatingMode("ungauged");
+    }
+
+    // Calculate missing values
+    let missingCount = 0;
+    rows.forEach((row) => {
+      columns.forEach((col) => {
+        if (row[col] === null || row[col] === undefined || row[col] === "") {
+          missingCount++;
+        }
+      });
+    });
+
+    if (missingCount > 0) {
+      warnings.push(`Detected ${missingCount} empty cells. Missing meteorological forcings will be linearly forward-filled.`);
+    }
+
+    // Extract date range
+    let dateRange = null;
+    if (dateCol && rows.length > 0) {
+      const firstDate = String(rows[0][dateCol]);
+      const lastDate = String(rows[rows.length - 1][dateCol]);
+      dateRange = { start: firstDate, end: lastDate };
+      if (lastDate && !isNaN(Date.parse(lastDate))) {
+        setForecastOrigin(lastDate.split("T")[0]);
+      }
+    }
+
+    const filesizeFormatted =
+      byteLength > 1024 * 1024
+        ? `${(byteLength / (1024 * 1024)).toFixed(2)} MB`
+        : `${(byteLength / 1024).toFixed(1)} KB`;
+
+    setDataset({
+      filename,
+      filesize: filesizeFormatted,
+      rowCount: rows.length,
+      columns,
+      dateRange,
+      missingValuesCount: missingCount,
+      duplicateHeaders: [],
+      hasDischargeColumn: !!dischargeCol,
+      rows,
+      validationErrors: errors,
+      validationWarnings: warnings,
     });
   };
 
@@ -249,37 +273,38 @@ function DatasetTestingContent() {
         dataset.rows
       );
       saveActiveForecast(replay);
+      setIsLoading(false);
       router.push("/results");
-    }, 1000);
+    }, 600);
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white text-[#202124]">
+    <div className="flex flex-col min-h-screen bg-black text-white">
       {/* Editorial Header */}
-      <section className="py-14 border-b border-[#dadce0] bg-[#f8f9fa]">
+      <section className="py-16 border-b border-white/10 bg-[#060606]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <div className="text-xs uppercase tracking-wider font-semibold text-[#1a73e8] mb-2">
+              <div className="text-xs uppercase tracking-wider font-semibold text-white/60 mb-2 font-mono">
                 Hydrological Testing Laboratory
               </div>
-              <h1 className="text-3xl sm:text-4xl font-normal text-[#202124] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-normal text-white tracking-tight font-sans">
                 Dataset Testing & Inference
               </h1>
-              <p className="text-sm text-[#5f6368] mt-2 max-w-2xl leading-relaxed">
+              <p className="text-sm text-white/70 mt-2 max-w-2xl leading-relaxed">
                 Provide continuous daily catchment meteorological forcings (minimum 90–365 days rolling context) to
                 evaluate river discharge and high-flow exceedance risk.
               </p>
             </div>
 
-            <div className="text-xs p-3 bg-white border border-[#dadce0] rounded-lg flex items-center gap-2 text-[#5f6368]">
+            <div className="text-xs p-3 glass-card flex items-center gap-2 text-white/80">
               <span
-                className={`w-2.5 h-2.5 rounded-full ${
-                  backendHealth?.connected ? "bg-[#137333]" : "bg-[#f9ab00]"
+                className={`w-2 h-2 rounded-full ${
+                  backendHealth?.connected ? "bg-emerald-400" : "bg-amber-400"
                 }`}
               />
               <span>Inference Engine:</span>
-              <strong className={backendHealth?.connected ? "text-[#137333]" : "text-[#e37400]"}>
+              <strong className={backendHealth?.connected ? "text-emerald-400" : "text-amber-400"}>
                 {backendHealth?.connected ? "API Connected" : "Benchmark Pilot Mode"}
               </strong>
             </div>
@@ -290,9 +315,9 @@ function DatasetTestingContent() {
       {/* Main Workspace */}
       <section className="py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 flex-grow">
         {/* Presets */}
-        <div className="google-card p-6 space-y-4">
-          <div className="text-xs uppercase tracking-wider font-semibold text-[#202124] flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#137333]" />
+        <div className="glass-card p-6 space-y-4">
+          <div className="text-xs uppercase tracking-wider font-semibold text-white/70 flex items-center gap-2 font-mono">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>Select a Verified Benchmark Catchment</span>
           </div>
 
@@ -303,10 +328,10 @@ function DatasetTestingContent() {
                 setCatchmentId("01434000");
                 loadBenchmarkSample("catchment_01434000_gauged.csv", "gauged");
               }}
-              className="p-4 bg-[#f8f9fa] hover:bg-white border border-[#dadce0] rounded-lg text-left transition-all hover:border-[#1a73e8]"
+              className="p-4 bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 rounded-xl text-left transition-all hover:border-white/30"
             >
-              <div className="text-sm font-medium text-[#202124]">USGS 01434000 • Gauged</div>
-              <div className="text-xs text-[#5f6368] mt-1">
+              <div className="text-sm font-medium text-white">USGS 01434000 • Gauged</div>
+              <div className="text-xs text-white/60 mt-1">
                 Neversink River, NY (366 days observed flow & forcings)
               </div>
             </button>
@@ -317,10 +342,10 @@ function DatasetTestingContent() {
                 setCatchmentId("01434000");
                 loadBenchmarkSample("catchment_01434000_ungauged.csv", "ungauged");
               }}
-              className="p-4 bg-[#f8f9fa] hover:bg-white border border-[#dadce0] rounded-lg text-left transition-all hover:border-[#e37400]"
+              className="p-4 bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 rounded-xl text-left transition-all hover:border-amber-400/40"
             >
-              <div className="text-sm font-medium text-[#e37400]">USGS 01434000 • Ungauged / PUB</div>
-              <div className="text-xs text-[#5f6368] mt-1">
+              <div className="text-sm font-medium text-amber-300">USGS 01434000 • Ungauged / PUB</div>
+              <div className="text-xs text-white/60 mt-1">
                 PUB Mode: Flow observations omitted; meteorology only
               </div>
             </button>
@@ -331,10 +356,10 @@ function DatasetTestingContent() {
                 setCatchmentId("01614000");
                 loadBenchmarkSample("unseen_basin_appalachian_gauged.csv", "gauged");
               }}
-              className="p-4 bg-[#f8f9fa] hover:bg-white border border-[#dadce0] rounded-lg text-left transition-all hover:border-[#1a73e8]"
+              className="p-4 bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 rounded-xl text-left transition-all hover:border-white/30"
             >
-              <div className="text-sm font-medium text-[#202124]">USGS 01614000 • Unseen Holdout</div>
-              <div className="text-xs text-[#5f6368] mt-1">
+              <div className="text-sm font-medium text-white">USGS 01614000 • Unseen Holdout</div>
+              <div className="text-xs text-white/60 mt-1">
                 Generalization test basin excluded during model training
               </div>
             </button>
@@ -342,31 +367,31 @@ function DatasetTestingContent() {
         </div>
 
         {/* Form Controls */}
-        <div className="google-card p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs">
+        <div className="glass-card p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs">
           <div>
-            <label className="block text-[#5f6368] font-medium uppercase tracking-wider text-[11px] mb-2">
+            <label className="block text-white/70 font-medium uppercase tracking-wider text-[11px] mb-2 font-mono">
               Catchment Gauge ID
             </label>
             <input
               type="text"
               value={catchmentId}
               onChange={(e) => setCatchmentId(e.target.value)}
-              className="w-full px-3 py-2 bg-white border border-[#dadce0] rounded text-[#202124] focus:outline-none focus:border-[#1a73e8]"
+              className="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-white/50"
             />
           </div>
 
           <div>
-            <label className="block text-[#5f6368] font-medium uppercase tracking-wider text-[11px] mb-2">
+            <label className="block text-white/70 font-medium uppercase tracking-wider text-[11px] mb-2 font-mono">
               Operating Mode
             </label>
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => setOperatingMode("gauged")}
-                className={`py-2 px-3 rounded text-center border text-xs font-medium transition-colors ${
+                className={`py-2 px-3 rounded-lg text-center border text-xs font-medium transition-colors ${
                   operatingMode === "gauged"
-                    ? "bg-[#1f1f1f] border-[#1f1f1f] text-white"
-                    : "bg-white border-[#dadce0] text-[#3c4043] hover:bg-[#f8f9fa]"
+                    ? "bg-white text-black border-white"
+                    : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
                 }`}
               >
                 Gauged
@@ -374,10 +399,10 @@ function DatasetTestingContent() {
               <button
                 type="button"
                 onClick={() => setOperatingMode("ungauged")}
-                className={`py-2 px-3 rounded text-center border text-xs font-medium transition-colors ${
+                className={`py-2 px-3 rounded-lg text-center border text-xs font-medium transition-colors ${
                   operatingMode === "ungauged"
-                    ? "bg-[#1f1f1f] border-[#1f1f1f] text-white"
-                    : "bg-white border-[#dadce0] text-[#3c4043] hover:bg-[#f8f9fa]"
+                    ? "bg-white text-black border-white"
+                    : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
                 }`}
               >
                 Ungauged / PUB
@@ -386,15 +411,15 @@ function DatasetTestingContent() {
           </div>
 
           <div>
-            <label className="block text-[#5f6368] font-medium uppercase tracking-wider text-[11px] mb-2 flex items-center justify-between">
+            <label className="block text-white/70 font-medium uppercase tracking-wider text-[11px] mb-2 flex items-center justify-between font-mono">
               <span>Forecast Origin Date</span>
-              <Calendar className="w-3.5 h-3.5 text-[#5f6368]" />
+              <Calendar className="w-3.5 h-3.5 text-white/50" />
             </label>
             <input
               type="date"
               value={forecastOrigin}
               onChange={(e) => setForecastOrigin(e.target.value)}
-              className="w-full px-3 py-2 bg-white border border-[#dadce0] rounded text-[#202124] focus:outline-none focus:border-[#1a73e8]"
+              className="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-white/50"
             />
           </div>
         </div>
@@ -407,10 +432,10 @@ function DatasetTestingContent() {
           }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
-          className={`border-2 border-dashed rounded-xl p-10 text-center transition-all ${
+          className={`border-2 border-dashed rounded-2xl p-10 text-center transition-all ${
             isDragging
-              ? "border-[#1a73e8] bg-[#e8f0fe]/30"
-              : "border-[#dadce0] bg-[#f8f9fa] hover:border-[#bdc1c6]"
+              ? "border-white bg-white/10"
+              : "border-white/20 bg-white/[0.02] hover:border-white/40"
           }`}
         >
           <input
@@ -421,18 +446,18 @@ function DatasetTestingContent() {
             className="hidden"
             id="csv-file-input"
           />
-          <UploadCloud className="w-10 h-10 mx-auto text-[#5f6368] mb-3" />
-          <div className="text-base font-medium text-[#202124]">
+          <UploadCloud className="w-10 h-10 mx-auto text-white/60 mb-3" />
+          <div className="text-base font-medium text-white">
             Drag & Drop Catchment Time Series CSV
           </div>
-          <p className="text-xs text-[#5f6368] mt-1 max-w-md mx-auto">
+          <p className="text-xs text-white/60 mt-1 max-w-md mx-auto">
             Supports standard hydrological datasets (CAMELS / ERA5-Land / USGS format). Requires date and daily
             meteorological forcings.
           </p>
           <div className="mt-4">
             <label
               htmlFor="csv-file-input"
-              className="google-pill-light text-xs py-2 px-5 inline-flex items-center gap-2 cursor-pointer shadow-sm"
+              className="glass-pill text-xs py-2 px-5 inline-flex items-center gap-2 cursor-pointer shadow-sm"
             >
               <FileText className="w-3.5 h-3.5" />
               <span>Browse Local File</span>
@@ -442,9 +467,9 @@ function DatasetTestingContent() {
 
         {/* Errors */}
         {apiError && (
-          <div className="p-4 bg-[#fce8e6] border border-[#ea4335]/40 rounded-lg text-xs text-[#c5221f] space-y-2">
+          <div className="p-4 bg-red-950/40 border border-red-500/30 rounded-xl text-xs text-red-200 space-y-2">
             <div className="flex items-center gap-2 font-medium">
-              <AlertCircle className="w-4 h-4" />
+              <AlertCircle className="w-4 h-4 text-red-400" />
               <span>Notice:</span>
             </div>
             <p>{apiError}</p>
@@ -452,7 +477,7 @@ function DatasetTestingContent() {
               <div className="pt-2">
                 <button
                   onClick={handleRunBenchmarkReplay}
-                  className="google-pill text-xs py-1.5 px-4"
+                  className="glass-pill text-xs py-1.5 px-4"
                 >
                   Run Verified Benchmark Replay Instead
                 </button>
@@ -463,18 +488,18 @@ function DatasetTestingContent() {
 
         {/* Dataset Preview */}
         {dataset && (
-          <div className="google-card p-6 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#dadce0] gap-4">
+          <div className="glass-card p-6 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 gap-4">
               <div>
-                <h3 className="text-base font-medium text-[#202124]">{dataset.filename}</h3>
-                <div className="text-xs text-[#5f6368] mt-0.5">
+                <h3 className="text-base font-medium text-white">{dataset.filename}</h3>
+                <div className="text-xs text-white/60 mt-0.5">
                   {dataset.rowCount} daily records • {dataset.filesize}
                 </div>
               </div>
 
               <button
                 onClick={handleReset}
-                className="text-xs text-[#5f6368] hover:text-[#d93025] flex items-center gap-1 transition-colors"
+                className="text-xs text-white/60 hover:text-red-400 flex items-center gap-1 transition-colors"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>Remove File</span>
@@ -482,30 +507,30 @@ function DatasetTestingContent() {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-              <div className="p-3 bg-[#f8f9fa] rounded border border-[#dadce0]">
-                <div className="text-[#5f6368] text-[11px]">Date Span</div>
-                <div className="text-[#202124] font-medium mt-1">
+              <div className="p-3 bg-white/[0.03] rounded-lg border border-white/10">
+                <div className="text-white/60 text-[11px]">Date Span</div>
+                <div className="text-white font-medium mt-1">
                   {dataset.dateRange ? `${dataset.dateRange.start} → ${dataset.dateRange.end}` : "N/A"}
                 </div>
               </div>
 
-              <div className="p-3 bg-[#f8f9fa] rounded border border-[#dadce0]">
-                <div className="text-[#5f6368] text-[11px]">History Window</div>
-                <div className="text-[#202124] font-medium mt-1">
+              <div className="p-3 bg-white/[0.03] rounded-lg border border-white/10">
+                <div className="text-white/60 text-[11px]">History Window</div>
+                <div className="text-white font-medium mt-1">
                   {dataset.rowCount} Days ({dataset.rowCount >= 365 ? "Optimal" : "Sufficient"})
                 </div>
               </div>
 
-              <div className="p-3 bg-[#f8f9fa] rounded border border-[#dadce0]">
-                <div className="text-[#5f6368] text-[11px]">Missing Cells</div>
-                <div className="text-[#202124] font-medium mt-1">
+              <div className="p-3 bg-white/[0.03] rounded-lg border border-white/10">
+                <div className="text-white/60 text-[11px]">Missing Cells</div>
+                <div className="text-white font-medium mt-1">
                   {dataset.missingValuesCount === 0 ? "0 (Clean)" : `${dataset.missingValuesCount} Cells`}
                 </div>
               </div>
 
-              <div className="p-3 bg-[#f8f9fa] rounded border border-[#dadce0]">
-                <div className="text-[#5f6368] text-[11px]">Observed Flow Column</div>
-                <div className="text-[#202124] font-medium mt-1">
+              <div className="p-3 bg-white/[0.03] rounded-lg border border-white/10">
+                <div className="text-white/60 text-[11px]">Observed Flow Column</div>
+                <div className="text-white font-medium mt-1">
                   {dataset.hasDischargeColumn ? "Present" : "Not Present (PUB)"}
                 </div>
               </div>
@@ -513,10 +538,10 @@ function DatasetTestingContent() {
 
             {/* Table Preview */}
             <div>
-              <div className="text-xs font-medium text-[#202124] mb-2">First 5 Rows Preview</div>
-              <div className="overflow-x-auto border border-[#dadce0] rounded-lg">
+              <div className="text-xs font-medium text-white mb-2">First 5 Rows Preview</div>
+              <div className="overflow-x-auto border border-white/10 rounded-xl">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-[#f8f9fa] text-[#5f6368] border-b border-[#dadce0]">
+                  <thead className="bg-white/5 text-white/60 border-b border-white/10">
                     <tr>
                       {dataset.columns.map((c) => (
                         <th key={c} className="p-2.5 font-medium">
@@ -525,9 +550,9 @@ function DatasetTestingContent() {
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#dadce0] text-[#3c4043]">
+                  <tbody className="divide-y divide-white/5 text-white/80">
                     {dataset.rows.slice(0, 5).map((row, idx) => (
-                      <tr key={idx} className="hover:bg-[#f8f9fa]">
+                      <tr key={idx} className="hover:bg-white/[0.02]">
                         {dataset.columns.map((c) => (
                           <td key={c} className="p-2.5 whitespace-nowrap font-mono text-[11px]">
                             {row[c] !== undefined ? String(row[c]) : "-"}
@@ -541,16 +566,16 @@ function DatasetTestingContent() {
             </div>
 
             {/* Submit Action */}
-            <div className="pt-4 border-t border-[#dadce0] flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-xs text-[#5f6368]">
-                Origin: <strong className="text-[#202124]">{forecastOrigin}</strong> • Mode:{" "}
-                <strong className="text-[#202124] uppercase">{operatingMode}</strong>
+            <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-xs text-white/60">
+                Origin: <strong className="text-white">{forecastOrigin}</strong> • Mode:{" "}
+                <strong className="text-white uppercase">{operatingMode}</strong>
               </div>
 
               <button
                 disabled={isLoading || dataset.validationErrors.length > 0}
                 onClick={backendHealth?.connected ? handleRunPrediction : handleRunBenchmarkReplay}
-                className="google-pill text-sm py-2.5 px-6 shadow-sm w-full sm:w-auto justify-center"
+                className="glass-pill-solid text-sm py-2.5 px-7 shadow-lg w-full sm:w-auto justify-center"
               >
                 {isLoading ? "Running Inference..." : "Run Predictions"}
               </button>
@@ -560,10 +585,10 @@ function DatasetTestingContent() {
 
         {/* Loading Message */}
         {isLoading && (
-          <div className="google-card p-8 text-center space-y-3">
-            <div className="w-6 h-6 border-2 border-[#1a73e8] border-t-transparent rounded-full animate-spin mx-auto" />
-            <div className="text-sm font-medium text-[#202124]">{loadingMessage}</div>
-            <p className="text-xs text-[#5f6368]">
+          <div className="glass-card p-8 text-center space-y-3">
+            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto" />
+            <div className="text-sm font-medium text-white">{loadingMessage}</div>
+            <p className="text-xs text-white/60">
               Computing 4 linear reservoir states, Ridge baseline, and LightGBM residual hydrograph corrections.
             </p>
           </div>
@@ -577,8 +602,8 @@ export default function DatasetTestingPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-white text-[#202124] flex flex-col items-center justify-center p-6 text-xs">
-          <div className="w-6 h-6 border-2 border-[#1a73e8] border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 text-xs">
+          <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mb-4" />
           <div>Initializing Testing Laboratory...</div>
         </div>
       }
