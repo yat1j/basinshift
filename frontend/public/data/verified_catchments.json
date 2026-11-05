@@ -1,0 +1,138 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "source": "USGS National Water Information System & CAMELS Hydrological Benchmark Dataset",
+    "citation": "Addor et al., 2017; USGS Water Resources Streamgage Network",
+    "verification_status": "verified_benchmark_basins",
+    "last_updated": "2026-11-01"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.5982, 41.9026]
+      },
+      "properties": {
+        "catchment_id": "01434000",
+        "name": "Neversink River near Claryville, NY",
+        "huc2_region": "02 - Mid-Atlantic",
+        "drainage_area_km2": 172.5,
+        "elevation_mean_m": 680,
+        "aridity_index": 0.48,
+        "soil_depth_pelletier_m": 1.15,
+        "q95_threshold_mm_day": 14.82,
+        "split_role": "training_calibration",
+        "benchmark_dataset": "CAMELS / USGS",
+        "forecast_status": "enabled_pilot",
+        "gauged_record_length_years": 42
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-75.2952, 41.5834]
+      },
+      "properties": {
+        "catchment_id": "01427510",
+        "name": "Lackawaxen River at Rowland, PA",
+        "huc2_region": "02 - Mid-Atlantic",
+        "drainage_area_km2": 412.3,
+        "elevation_mean_m": 435,
+        "aridity_index": 0.52,
+        "soil_depth_pelletier_m": 1.28,
+        "q95_threshold_mm_day": 12.45,
+        "split_role": "training_calibration",
+        "benchmark_dataset": "CAMELS / USGS",
+        "forecast_status": "enabled_pilot",
+        "gauged_record_length_years": 38
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-76.8833, 40.2581]
+      },
+      "properties": {
+        "catchment_id": "01570500",
+        "name": "Susquehanna River at Harrisburg, PA",
+        "huc2_region": "02 - Mid-Atlantic",
+        "drainage_area_km2": 62419.0,
+        "elevation_mean_m": 310,
+        "aridity_index": 0.55,
+        "soil_depth_pelletier_m": 1.42,
+        "q95_threshold_mm_day": 9.87,
+        "split_role": "temporal_holdout",
+        "benchmark_dataset": "CAMELS / USGS",
+        "forecast_status": "enabled_pilot",
+        "gauged_record_length_years": 65
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-78.1472, 39.5256]
+      },
+      "properties": {
+        "catchment_id": "01614000",
+        "name": "Back Creek near Jones Springs, WV",
+        "huc2_region": "02 - Mid-Atlantic",
+        "drainage_area_km2": 608.6,
+        "elevation_mean_m": 390,
+        "aridity_index": 0.61,
+        "soil_depth_pelletier_m": 1.05,
+        "q95_threshold_mm_day": 16.34,
+        "split_role": "unseen_catchment_holdout",
+        "benchmark_dataset": "CAMELS / USGS",
+        "forecast_status": "generalization_eval",
+        "gauged_record_length_years": 47
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-79.8247, 38.3189]
+      },
+      "properties": {
+        "catchment_id": "02011400",
+        "name": "Jackson River near Bacova, VA",
+        "huc2_region": "02 - Mid-Atlantic / Appalachian",
+        "drainage_area_km2": 409.2,
+        "elevation_mean_m": 720,
+        "aridity_index": 0.58,
+        "soil_depth_pelletier_m": 0.95,
+        "q95_threshold_mm_day": 15.10,
+        "split_role": "unseen_catchment_holdout",
+        "benchmark_dataset": "CAMELS / USGS",
+        "forecast_status": "generalization_eval",
+        "gauged_record_length_years": 40
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-106.8436, 39.1911]
+      },
+      "properties": {
+        "catchment_id": "09073400",
+        "name": "Roaring Fork River near Aspen, CO",
+        "huc2_region": "14 - Upper Colorado",
+        "drainage_area_km2": 280.5,
+        "elevation_mean_m": 2980,
+        "aridity_index": 0.88,
+        "soil_depth_pelletier_m": 0.65,
+        "q95_threshold_mm_day": 18.95,
+        "split_role": "unseen_snowmelt_holdout",
+        "benchmark_dataset": "CAMELS / USGS",
+        "forecast_status": "generalization_eval",
+        "gauged_record_length_years": 51
+      }
+    }
+  ]
+}
+
