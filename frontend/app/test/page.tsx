@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { FeatureMode } from "@/lib/types";
 import {
-  https://basinshift-alpha.vercel.app,
+  API_BASE_URL,
   checkBackendHealth,
   submitPrediction,
   HealthCheckResult,
@@ -394,8 +394,9 @@ function DatasetTestingContent() {
       setIsLoading(false);
       if (!response.isBackendConnected) {
         setApiError(
-          `Inference server at ${backendHealth?.url || "http://localhost:8000"} is unreachable. ` +
-          `Please verify that Member 1's FastAPI server is running on http://localhost:8000.`
+          `Inference server at ${backendHealth?.url || API_BASE_URL} is unreachable. ` +
+          `Connection status: ${backendHealth?.statusText || "checking backend"}. ` +
+          "The hosted API may be initializing; retry the connection and try again."
         );
       } else {
         const errorDetail = response.errorCode ? `[${response.errorCode}] ` : "";
@@ -424,16 +425,43 @@ function DatasetTestingContent() {
               </p>
             </div>
 
-            <div className="text-xs p-3 glass-card flex items-center gap-2 text-white/80">
+            <div className="text-xs p-3 glass-card flex flex-wrap items-center gap-2 text-white/80">
               <span
                 className={`w-2 h-2 rounded-full ${
-                  backendHealth?.connected ? "bg-emerald-400" : "bg-red-400"
+                  backendHealth?.connected
+                    ? "bg-emerald-400"
+                    : backendHealth === null
+                      ? "bg-amber-400 animate-pulse"
+                      : "bg-red-400"
                 }`}
               />
               <span>Inference Engine:</span>
-              <strong className={backendHealth?.connected ? "text-emerald-400" : "text-red-400"}>
-                {backendHealth?.connected ? "API Connected (GET /health OK)" : "Offline (http://localhost:8000)"}
+              <strong
+                className={
+                  backendHealth?.connected
+                    ? "text-emerald-400"
+                    : backendHealth === null
+                      ? "text-amber-400"
+                      : "text-red-400"
+                }
+              >
+                {backendHealth === null
+                  ? "Checking hosted API…"
+                  : backendHealth.connected
+                    ? "API Connected (GET /health OK)"
+                    : `${backendHealth.statusText || "Connection unavailable"} — ${backendHealth.url || API_BASE_URL}`}
               </strong>
+              <button
+                type="button"
+                onClick={() => {
+                  setBackendHealth(null);
+                  checkBackendHealth().then(setBackendHealth);
+                }}
+                disabled={backendHealth === null}
+                className="ml-auto rounded border border-white/20 px-2 py-1 text-white/80 hover:bg-white/10 disabled:opacity-40"
+              >
+                Retry
+              </button>
             </div>
           </div>
         </div>
