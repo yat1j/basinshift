@@ -9,7 +9,7 @@ import {
   ClassificationBenchmark,
 } from "./types";
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+export const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "https://basinshift-alpha.vercel.app").replace(/\/+$/, "");
 
 export interface HealthCheckResult {
   connected: boolean;
@@ -26,7 +26,7 @@ export async function checkBackendHealth(): Promise<HealthCheckResult> {
   const start = performance.now();
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 4000);
+    const timeoutId = setTimeout(() => controller.abort(), 60000); // Allow for cold-start initialization of the 13-model pipeline.
     const res = await fetch(`${API_BASE_URL}/health`, {
       method: "GET",
       signal: controller.signal,
@@ -59,7 +59,7 @@ export async function checkBackendHealth(): Promise<HealthCheckResult> {
 export async function fetchMetrics(): Promise<MetricsResult> {
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    const timeoutId = setTimeout(() => controller.abort(), 60000); // Metrics requests can also trigger a serverless cold start.
     const res = await fetch(`${API_BASE_URL}/metrics`, {
       method: "GET",
       signal: controller.signal,
@@ -85,7 +85,7 @@ export async function fetchMetrics(): Promise<MetricsResult> {
     return {
       success: false,
       error: isTimeout
-        ? `Request to ${API_BASE_URL}/metrics timed out after 10 seconds.`
+        ? `Request to ${API_BASE_URL}/metrics timed out after 60 seconds.`
         : `Backend server at ${API_BASE_URL} is unreachable. Ensure the FastAPI backend server is running on ${API_BASE_URL}.`,
       isBackendConnected: false,
     };
@@ -235,7 +235,7 @@ export async function submitPrediction(req: PredictRequest): Promise<PredictResp
     formData.append("allow_unsupported_region", String(req.allow_unsupported_region ?? false));
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 35000); // 35s timeout for inference
+    const timeoutId = setTimeout(() => controller.abort(), 120000); // Allow for cold-start model loading plus the prediction request.
 
     // Browser automatically sets multipart/form-data boundary when Content-Type is omitted
     const res = await fetch(`${API_BASE_URL}/predict`, {
@@ -277,7 +277,7 @@ export async function submitPrediction(req: PredictRequest): Promise<PredictResp
     return {
       success: false,
       error: isTimeout
-        ? `Inference request to ${API_BASE_URL} timed out after 35 seconds.`
+        ? `Inference request to ${API_BASE_URL} timed out after 120 seconds.`
         : `Inference backend at ${API_BASE_URL} is unreachable. Ensure the FastAPI backend server is running on ${API_BASE_URL}.`,
       isBackendConnected: false,
     };
