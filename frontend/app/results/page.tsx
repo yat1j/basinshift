@@ -119,9 +119,13 @@ export default function ForecastResultsPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {forecast.forecast_horizons_days.map((h, idx) => {
-              const qVal = forecast.predicted_discharge_mm_day[idx];
-              const prob = forecast.high_flow_probability[idx];
-              const isHigh = qVal >= forecast.high_flow_threshold_mm_day;
+              const hKey = `${h}d`;
+              const qVal = forecast.predicted_discharge?.[hKey] ?? forecast.predicted_discharge_mm_day?.[idx] ?? 0;
+              const prob = (forecast.high_flow_probability && !Array.isArray(forecast.high_flow_probability))
+                ? (forecast.high_flow_probability[hKey] ?? 0)
+                : (Array.isArray(forecast.high_flow_probability) ? (forecast.high_flow_probability[idx] ?? 0) : 0);
+              const tau = forecast.high_flow_alert_threshold?.[hKey] ?? forecast.classifier_decision_threshold ?? 0.70;
+              const isHigh = forecast.high_flow_alert?.[hKey] ?? (qVal >= forecast.high_flow_threshold_mm_day);
 
               return (
                 <div
@@ -144,7 +148,7 @@ export default function ForecastResultsPage() {
 
                   <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono">
                     <span className="text-white/60">High-Flow Risk:</span>
-                    <span className={prob >= forecast.classifier_decision_threshold ? "text-amber-400 font-bold" : "text-white"}>
+                    <span className={prob >= tau ? "text-amber-400 font-bold" : "text-white"}>
                       {(prob * 100).toFixed(1)}%
                     </span>
                   </div>
@@ -184,9 +188,13 @@ export default function ForecastResultsPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
             {forecast.forecast_horizons_days.map((h, idx) => {
-              const prob = forecast.high_flow_probability[idx];
+              const hKey = `${h}d`;
+              const prob = (forecast.high_flow_probability && !Array.isArray(forecast.high_flow_probability))
+                ? (forecast.high_flow_probability[hKey] ?? 0)
+                : (Array.isArray(forecast.high_flow_probability) ? (forecast.high_flow_probability[idx] ?? 0) : 0);
+              const tau = forecast.high_flow_alert_threshold?.[hKey] ?? forecast.classifier_decision_threshold ?? 0.70;
               const pct = (prob * 100).toFixed(1);
-              const isPositive = prob >= forecast.classifier_decision_threshold;
+              const isPositive = forecast.high_flow_alert?.[hKey] ?? (prob >= tau);
 
               return (
                 <div key={h} className="p-4 bg-white/[0.03] border border-white/10 rounded-xl space-y-2">
@@ -203,8 +211,8 @@ export default function ForecastResultsPage() {
                     />
                   </div>
                   <div className="flex justify-between text-[11px] text-white/50 pt-1">
-                    <span>Score: {prob.toFixed(3)}</span>
-                    <span>Decision Cutoff: {forecast.classifier_decision_threshold.toFixed(2)}</span>
+                    <span>Score: {prob.toFixed(4)}</span>
+                    <span>Decision Cutoff: {tau.toFixed(2)}</span>
                   </div>
                 </div>
               );
@@ -281,21 +289,28 @@ export default function ForecastResultsPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <span className="text-white/60 block">Regression Family:</span>
-                  <span className="text-white font-medium">{forecast.model_metadata.regression_model_family}</span>
+                  <span className="text-white font-medium">
+                    {forecast.model_metadata?.regression_models?.["1d"]?.model_family || forecast.model_metadata?.regression_model_family || "XGBoost"}
+                  </span>
                 </div>
                 <div>
                   <span className="text-white/60 block">Feature Specification:</span>
-                  <span className="text-white font-medium">Variant A Hydrological Features</span>
+                  <span className="text-white font-medium">
+                    {forecast.model_metadata?.hydrological_features || "Variant A Conceptual Reservoirs"}
+                  </span>
                 </div>
                 <div>
                   <span className="text-white/60 block">Artifact IDs:</span>
                   <span className="text-white/80 font-mono">
-                    {forecast.model_metadata.regression_artifact_ids["1d"]} • {forecast.model_metadata.regression_artifact_ids["3d"]}
+                    {forecast.model_metadata?.regression_models?.["1d"]?.artifacts?.join(", ") || 
+                     (forecast.model_metadata?.regression_artifact_ids ? `${forecast.model_metadata.regression_artifact_ids["1d"]} • ${forecast.model_metadata.regression_artifact_ids["3d"]}` : "xgboost_gauged_h1.joblib")}
                   </span>
                 </div>
                 <div>
                   <span className="text-white/60 block">Data Benchmark:</span>
-                  <span className="text-white font-medium">{forecast.model_metadata.data_version}</span>
+                  <span className="text-white font-medium">
+                    {forecast.model_metadata?.source_collection || forecast.model_metadata?.data_version || "CAMELS-US"}
+                  </span>
                 </div>
               </div>
             </div>

@@ -244,23 +244,9 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Map Container */}
-        <div className="glass-card overflow-hidden shadow-2xl">
-          <div className="p-4 bg-black/60 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="font-medium text-sm text-white">BASINSHIFT Explorer</span>
-              <span className="text-xs text-white/60">• Verified Benchmark Streamgages</span>
-            </div>
-            <Link href="/test" className="text-xs font-medium text-white hover:text-white/80 flex items-center gap-1">
-              <span>Upload Catchment History</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
+        {/* Map Container: Compact live map preview of official USGS National Water Dashboard */}
+        <CatchmentMap variant="compact" />
 
-          <div className="h-[520px]">
-            <CatchmentMap />
-          </div>
-        </div>
 
         <p className="text-center text-xs text-white/60 mt-4">
           <em className="text-white font-medium not-italic">Catchment Explorer</em> currently benchmarks against verified

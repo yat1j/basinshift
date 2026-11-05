@@ -13,9 +13,10 @@ import {
   Trash2,
   ShieldCheck,
   ChevronRight,
+  AlertTriangle,
 } from "lucide-react";
 import { FeatureMode } from "@/lib/types";
-import { checkBackendHealth, submitPrediction, generateBenchmarkReplay, HealthCheckResult } from "@/lib/api";
+import { checkBackendHealth, submitPrediction, HealthCheckResult } from "@/lib/api";
 import { saveActiveForecast, clearActiveForecast } from "@/lib/store";
 
 interface ParsedDataset {
@@ -32,15 +33,30 @@ interface ParsedDataset {
   validationWarnings: string[];
 }
 
+const BASE_REQUIRED_COLUMNS = [
+  "catchment_id",
+  "date",
+  "total_precipitation",
+  "temperature_2m",
+  "dewpoint_temperature_2m",
+  "potential_evaporation",
+  "volumetric_soil_water_layer_1",
+  "snow_depth_water_equivalent",
+  "drainage_area",
+  "source_collection",
+];
+
 function DatasetTestingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   // Operating Form State
   const [operatingMode, setOperatingMode] = useState<FeatureMode>("gauged");
-  const [forecastOrigin, setForecastOrigin] = useState<string>("2024-09-15");
-  const [catchmentId, setCatchmentId] = useState<string>("01434000");
+  const [forecastOrigin, setForecastOrigin] = useState<string>("2013-05-15");
+  const [catchmentId, setCatchmentId] = useState<string>("camels_01047000");
+  const [allowUnsupportedRegion, setAllowUnsupportedRegion] = useState<boolean>(false);
   const [dataset, setDataset] = useState<ParsedDataset | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<File | Blob | null>(null);
 
   // Status & Loading State
   const [isDragging, setIsDragging] = useState(false);
@@ -51,7 +67,7 @@ function DatasetTestingContent() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Query parameter pre-selection
+  // Query parameter pre-selection and initial health check
   useEffect(() => {
     const sampleQuery = searchParams.get("sample");
     const modeQuery = searchParams.get("mode") as FeatureMode | null;
@@ -67,18 +83,55 @@ function DatasetTestingContent() {
     checkBackendHealth().then((health) => setBackendHealth(health));
   }, [searchParams]);
 
-  const loadBenchmarkSample = async (filename: string, mode: FeatureMode) => {
+  // Re-run validation if operating mode or forecast origin changes on an existing dataset
+  useEffect(() => {
+    if (dataset && dataset.rows.length > 0) {
+      validateAndSetDataset(dataset.rows, dataset.columns, dataset.filename, dataset.rows.length * 100);
+    }
+  }, [operatingMode, forecastOrigin]);
+
+  const loadBenchmarkSample = async (
+    filename: string,
+    mode: FeatureMode,
+    forcedCid: string = "camels_01047000",
+    forcedOrigin: string = "2013-05-15"
+  ) => {
     setIsLoading(true);
-    setLoadingMessage(`Loading benchmark sample: ${filename}…`);
+    setLoadingMessage(`Loading authentic benchmark sample: ${filename}…`);
     setApiError(null);
+    setOperatingMode(mode);
+    setCatchmentId(forcedCid);
+    setForecastOrigin(forcedOrigin);
 
     try {
       const response = await fetch(`/samples/${filename}`);
       if (!response.ok) {
-        throw new Error(`Failed to load benchmark file: ${response.statusText}`);
+        throw new Error(`Failed to load benchmark sample file (${response.status} ${response.statusText})`);
       }
-      const text = await response.text();
-      parseCSVText(text, filename);
+      const blob = await response.blob();
+      const file = new File([blob], filename, { type: "text/csv" });
+      setUploadedFile(file);
+
+      const text = await blob.text();
+      Papa.parse(text, {
+        header: true,
+        dynamicTyping: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          validateAndSetDataset(
+            results.data as Record<string, any>[],
+            results.meta.fields || [],
+            filename,
+            text.length,
+            mode,
+            forcedOrigin,
+            forcedCid
+          );
+        },
+        error: (error: any) => {
+          setApiError(`CSV Parsing error: ${error?.message || String(error)}`);
+        },
+      });
     } catch (err: any) {
       setApiError(err.message || "Failed to load benchmark sample.");
     } finally {
@@ -92,7 +145,12 @@ function DatasetTestingContent() {
       dynamicTyping: true,
       skipEmptyLines: true,
       complete: (results) => {
-        validateAndSetDataset(results.data as Record<string, any>[], results.meta.fields || [], filename, csvText.length);
+        validateAndSetDataset(
+          results.data as Record<string, any>[],
+          results.meta.fields || [],
+          filename,
+          csvText.length
+        );
       },
       error: (error: any) => {
         setApiError(`CSV Parsing error: ${error?.message || String(error)}`);
@@ -104,44 +162,120 @@ function DatasetTestingContent() {
     rows: Record<string, any>[],
     columns: string[],
     filename: string,
-    byteLength: number
+    byteLength: number,
+    modeOverride?: FeatureMode,
+    originOverride?: string,
+    cidOverride?: string
   ) => {
+    const activeMode = modeOverride || operatingMode;
     const errors: string[] = [];
     const warnings: string[] = [];
 
     if (rows.length === 0) {
-      errors.push("Dataset contains no rows.");
+      errors.push("Uploaded dataset contains no data rows.");
+      setDataset({
+        filename,
+        filesize: "0 KB",
+        rowCount: 0,
+        columns,
+        dateRange: null,
+        missingValuesCount: 0,
+        duplicateHeaders: [],
+        hasDischargeColumn: false,
+        rows: [],
+        validationErrors: errors,
+        validationWarnings: warnings,
+      });
+      return;
     }
 
-    // Check for date column
-    const dateCol = columns.find(
-      (c) => c.toLowerCase() === "date" || c.toLowerCase() === "datetime" || c.toLowerCase() === "time"
-    );
+    // 1. Validate Schema against Required Columns
+    const expectedCols = activeMode === "gauged"
+      ? [...BASE_REQUIRED_COLUMNS, "streamflow"]
+      : BASE_REQUIRED_COLUMNS;
 
-    if (!dateCol) {
-      errors.push("Missing required 'date' column. Expected daily ISO timestamps (YYYY-MM-DD).");
+    const missingCols = expectedCols.filter((col) => !columns.includes(col));
+    if (missingCols.length > 0) {
+      errors.push(
+        `Missing required column(s) for ${activeMode} mode: ${missingCols.join(", ")}. Required schema: ${expectedCols.join(", ")}`
+      );
     }
 
-    // Check length
-    if (rows.length < 90) {
-      warnings.push(`Dataset length is ${rows.length} days. Hydrological reservoir spin-up requires ≥ 90 days (365 days recommended).`);
+    // 2. Identify Catchment Identity
+    if (cidOverride) {
+      setCatchmentId(cidOverride);
+    } else if (columns.includes("catchment_id")) {
+      const firstCid = String(rows[0]?.catchment_id || "").trim();
+      if (firstCid) {
+        setCatchmentId(firstCid);
+      }
     }
 
-    // Check for observed discharge column
-    const dischargeCol = columns.find(
-      (c) =>
-        c.toLowerCase().includes("discharge") ||
-        c.toLowerCase().includes("q_obs") ||
-        c.toLowerCase() === "q" ||
-        c.toLowerCase().includes("flow")
-    );
+    // 3. Date Range and Forecast Origin Detection
+    const hasDateCol = columns.includes("date");
+    let dateRange = null;
+    let targetOrigin = originOverride || forecastOrigin;
 
-    if (operatingMode === "gauged" && !dischargeCol) {
-      warnings.push("Operating mode set to Gauged, but no observed discharge column found. Switching to Ungauged/PUB mode.");
-      setOperatingMode("ungauged");
+    if (hasDateCol) {
+      const validDates = rows
+        .map((r) => String(r.date || "").trim())
+        .filter((d) => d && !isNaN(Date.parse(d)));
+
+      if (validDates.length > 0) {
+        validDates.sort();
+        const firstDate = validDates[0];
+        const lastDate = validDates[validDates.length - 1];
+        dateRange = { start: firstDate, end: lastDate };
+
+        // If forecastOrigin is outside the date range or unset, default to the latest date
+        if (originOverride) {
+          targetOrigin = originOverride;
+          setForecastOrigin(originOverride);
+        } else if (!validDates.includes(forecastOrigin)) {
+          targetOrigin = lastDate;
+          setForecastOrigin(lastDate);
+        }
+      } else {
+        errors.push("No valid ISO date records found in the 'date' column.");
+      }
+    } else {
+      errors.push("Missing required 'date' column (expected YYYY-MM-DD).");
     }
 
-    // Calculate missing values
+    // 4. Duplicate Dates Validation
+    if (hasDateCol) {
+      const seenDates = new Set<string>();
+      let dupCount = 0;
+      for (const r of rows) {
+        const d = String(r.date || "").trim();
+        if (d) {
+          if (seenDates.has(d)) {
+            dupCount++;
+          }
+          seenDates.add(d);
+        }
+      }
+      if (dupCount > 0) {
+        errors.push(`Duplicate date records detected (${dupCount} occurrences). Each date must be unique per catchment.`);
+      }
+    }
+
+    // 5. Antecedent History Length Validation (>= 365 continuous days prior to origin)
+    if (hasDateCol && targetOrigin) {
+      const targetTs = new Date(targetOrigin).getTime();
+      const antecedentRows = rows.filter((r) => {
+        const d = String(r.date || "").trim();
+        return d && new Date(d).getTime() <= targetTs;
+      });
+
+      if (antecedentRows.length < 365) {
+        errors.push(
+          `Insufficient antecedent history: found ${antecedentRows.length} daily records before forecast origin (${targetOrigin}). The inference pipeline strictly requires at least 365 days of continuous antecedent history.`
+        );
+      }
+    }
+
+    // 6. Check for Missing Values in Required Columns
     let missingCount = 0;
     rows.forEach((row) => {
       columns.forEach((col) => {
@@ -152,18 +286,7 @@ function DatasetTestingContent() {
     });
 
     if (missingCount > 0) {
-      warnings.push(`Detected ${missingCount} empty cells. Missing meteorological forcings will be linearly forward-filled.`);
-    }
-
-    // Extract date range
-    let dateRange = null;
-    if (dateCol && rows.length > 0) {
-      const firstDate = String(rows[0][dateCol]);
-      const lastDate = String(rows[rows.length - 1][dateCol]);
-      dateRange = { start: firstDate, end: lastDate };
-      if (lastDate && !isNaN(Date.parse(lastDate))) {
-        setForecastOrigin(lastDate.split("T")[0]);
-      }
+      warnings.push(`Detected ${missingCount} empty cells across dataset fields.`);
     }
 
     const filesizeFormatted =
@@ -179,7 +302,7 @@ function DatasetTestingContent() {
       dateRange,
       missingValuesCount: missingCount,
       duplicateHeaders: [],
-      hasDischargeColumn: !!dischargeCol,
+      hasDischargeColumn: columns.includes("streamflow"),
       rows,
       validationErrors: errors,
       validationWarnings: warnings,
@@ -194,6 +317,9 @@ function DatasetTestingContent() {
       setApiError("Invalid file type. Please upload a standard comma-separated (.csv) file.");
       return;
     }
+
+    setUploadedFile(file);
+    setApiError(null);
 
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -214,6 +340,9 @@ function DatasetTestingContent() {
       return;
     }
 
+    setUploadedFile(file);
+    setApiError(null);
+
     const reader = new FileReader();
     reader.onload = (event) => {
       const text = event.target?.result as string;
@@ -224,6 +353,7 @@ function DatasetTestingContent() {
 
   const handleReset = () => {
     setDataset(null);
+    setUploadedFile(null);
     setApiError(null);
     clearActiveForecast();
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -232,50 +362,42 @@ function DatasetTestingContent() {
   const handleRunPrediction = async () => {
     if (!dataset || dataset.validationErrors.length > 0) return;
 
+    if (!uploadedFile) {
+      setApiError("No file selected for prediction upload.");
+      return;
+    }
+
     clearActiveForecast();
     setApiError(null);
     setIsLoading(true);
-    setLoadingMessage("Preparing catchment history and generating forecasts…");
+    setLoadingMessage("Transmitting time-series CSV to BASINSHIFT inference engine…");
 
     const response = await submitPrediction({
+      file: uploadedFile,
+      filename: dataset.filename,
       catchment_id: catchmentId,
       forecast_origin: forecastOrigin,
-      operating_mode: operatingMode,
-      csv_rows: dataset.rows,
+      feature_mode: operatingMode,
+      allow_unsupported_region: allowUnsupportedRegion,
+      antecedent_rows: dataset.rows,
     });
 
     if (response.success && response.data) {
       saveActiveForecast(response.data);
       router.push("/results");
     } else {
+      setIsLoading(false);
       if (!response.isBackendConnected) {
         setApiError(
-          `Inference server at ${backendHealth?.url || "http://localhost:8000"} is offline. You can launch Member 1's backend or run the verified benchmark replay.`
+          `Inference server at ${backendHealth?.url || "http://localhost:8000"} is unreachable. ` +
+          `Please verify that Member 1's FastAPI server is running on http://localhost:8000.`
         );
-        setIsLoading(false);
       } else {
-        setApiError(response.error || "Inference execution failed.");
-        setIsLoading(false);
+        const errorDetail = response.errorCode ? `[${response.errorCode}] ` : "";
+        const fieldDetail = response.errorField ? ` (Field: ${response.errorField})` : "";
+        setApiError(`${errorDetail}${response.error || "Inference execution failed."}${fieldDetail}`);
       }
     }
-  };
-
-  const handleRunBenchmarkReplay = () => {
-    if (!dataset) return;
-    setIsLoading(true);
-    setLoadingMessage("Preparing catchment history and generating forecasts…");
-
-    setTimeout(() => {
-      const replay = generateBenchmarkReplay(
-        catchmentId,
-        forecastOrigin,
-        operatingMode,
-        dataset.rows
-      );
-      saveActiveForecast(replay);
-      setIsLoading(false);
-      router.push("/results");
-    }, 600);
   };
 
   return (
@@ -292,20 +414,20 @@ function DatasetTestingContent() {
                 Dataset Testing & Inference
               </h1>
               <p className="text-sm text-white/70 mt-2 max-w-2xl leading-relaxed">
-                Provide continuous daily catchment meteorological forcings (minimum 90–365 days rolling context) to
-                evaluate river discharge and high-flow exceedance risk.
+                Provide continuous daily catchment meteorological forcings (minimum 365 days rolling context) to
+                evaluate river discharge and high-flow exceedance risk using the authoritative FastAPI backend.
               </p>
             </div>
 
             <div className="text-xs p-3 glass-card flex items-center gap-2 text-white/80">
               <span
                 className={`w-2 h-2 rounded-full ${
-                  backendHealth?.connected ? "bg-emerald-400" : "bg-amber-400"
+                  backendHealth?.connected ? "bg-emerald-400" : "bg-red-400"
                 }`}
               />
               <span>Inference Engine:</span>
-              <strong className={backendHealth?.connected ? "text-emerald-400" : "text-amber-400"}>
-                {backendHealth?.connected ? "API Connected" : "Benchmark Pilot Mode"}
+              <strong className={backendHealth?.connected ? "text-emerald-400" : "text-red-400"}>
+                {backendHealth?.connected ? "API Connected (GET /health OK)" : "Offline (http://localhost:8000)"}
               </strong>
             </div>
           </div>
@@ -314,69 +436,122 @@ function DatasetTestingContent() {
 
       {/* Main Workspace */}
       <section className="py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 flex-grow">
-        {/* Presets */}
+        {/* Authentic Presets */}
         <div className="glass-card p-6 space-y-4">
-          <div className="text-xs uppercase tracking-wider font-semibold text-white/70 flex items-center gap-2 font-mono">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>Select a Verified Benchmark Catchment</span>
+          <div className="text-xs uppercase tracking-wider font-semibold text-white/70 flex items-center justify-between font-mono">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>Select an Authentic Benchmark Sample (from backend reports/)</span>
+            </div>
+            {uploadedFile && (
+              <span className="text-[11px] text-emerald-400 font-mono">
+                Active: {(uploadedFile as any).name || dataset?.filename}
+              </span>
+            )}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <button
+              type="button"
               onClick={() => {
-                setOperatingMode("gauged");
-                setCatchmentId("01434000");
-                loadBenchmarkSample("catchment_01434000_gauged.csv", "gauged");
+                loadBenchmarkSample("sample_gauged_upload.csv", "gauged", "camels_01047000", "2013-05-15");
               }}
-              className="p-4 bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 rounded-xl text-left transition-all hover:border-white/30"
+              className={`p-4 border rounded-xl text-left transition-all ${
+                uploadedFile && (uploadedFile as any).name === "sample_gauged_upload.csv" && operatingMode === "gauged"
+                  ? "bg-emerald-950/40 border-emerald-400 ring-1 ring-emerald-400/50"
+                  : "bg-white/[0.03] hover:bg-white/[0.08] border-white/10 hover:border-emerald-500/40"
+              }`}
             >
-              <div className="text-sm font-medium text-white">USGS 01434000 • Gauged</div>
+              <div className="text-sm font-medium text-white flex items-center justify-between">
+                <span>camels_01047000 • Gauged Mode</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded font-mono ${
+                  uploadedFile && (uploadedFile as any).name === "sample_gauged_upload.csv" && operatingMode === "gauged"
+                    ? "bg-emerald-400 text-black font-semibold"
+                    : "bg-emerald-500/20 text-emerald-400"
+                }`}>
+                  {uploadedFile && (uploadedFile as any).name === "sample_gauged_upload.csv" && operatingMode === "gauged"
+                    ? "✓ Loaded"
+                    : "Gauged"}
+                </span>
+              </div>
               <div className="text-xs text-white/60 mt-1">
-                Neversink River, NY (366 days observed flow & forcings)
+                Carrabassett River, ME • 731 days observed streamflow & ERA5-Land forcings (origin 2013-05-15)
               </div>
             </button>
 
             <button
+              type="button"
               onClick={() => {
-                setOperatingMode("ungauged");
-                setCatchmentId("01434000");
-                loadBenchmarkSample("catchment_01434000_ungauged.csv", "ungauged");
+                loadBenchmarkSample("sample_ungauged_upload.csv", "ungauged", "camels_01047000", "2013-05-15");
               }}
-              className="p-4 bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 rounded-xl text-left transition-all hover:border-amber-400/40"
+              className={`p-4 border rounded-xl text-left transition-all ${
+                uploadedFile && (uploadedFile as any).name === "sample_ungauged_upload.csv" && operatingMode === "ungauged"
+                  ? "bg-amber-950/40 border-amber-400 ring-1 ring-amber-400/50"
+                  : "bg-white/[0.03] hover:bg-white/[0.08] border-white/10 hover:border-amber-400/40"
+              }`}
             >
-              <div className="text-sm font-medium text-amber-300">USGS 01434000 • Ungauged / PUB</div>
-              <div className="text-xs text-white/60 mt-1">
-                PUB Mode: Flow observations omitted; meteorology only
+              <div className="text-sm font-medium text-amber-300 flex items-center justify-between">
+                <span>camels_01047000 • Ungauged / PUB Mode</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded font-mono ${
+                  uploadedFile && (uploadedFile as any).name === "sample_ungauged_upload.csv" && operatingMode === "ungauged"
+                    ? "bg-amber-400 text-black font-semibold"
+                    : "bg-amber-500/20 text-amber-300"
+                }`}>
+                  {uploadedFile && (uploadedFile as any).name === "sample_ungauged_upload.csv" && operatingMode === "ungauged"
+                    ? "✓ Loaded"
+                    : "Ungauged / PUB"}
+                </span>
               </div>
-            </button>
-
-            <button
-              onClick={() => {
-                setOperatingMode("gauged");
-                setCatchmentId("01614000");
-                loadBenchmarkSample("unseen_basin_appalachian_gauged.csv", "gauged");
-              }}
-              className="p-4 bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 rounded-xl text-left transition-all hover:border-white/30"
-            >
-              <div className="text-sm font-medium text-white">USGS 01614000 • Unseen Holdout</div>
               <div className="text-xs text-white/60 mt-1">
-                Generalization test basin excluded during model training
+                PUB Mode: Streamflow column omitted; 731 days ERA5-Land meteorology only (origin 2013-05-15)
               </div>
             </button>
           </div>
         </div>
 
+        {/* Selected Sample Ready Indicator */}
+        {uploadedFile && (
+          <div className="p-4 bg-emerald-950/30 border border-emerald-500/40 rounded-xl flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+              <div>
+                <div className="text-xs text-white font-medium flex items-center gap-2">
+                  <span>Active CSV File:</span>
+                  <span className="font-mono text-emerald-300 font-semibold">
+                    {dataset?.filename || (uploadedFile as any).name}
+                  </span>
+                  <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-mono">
+                    Sample Ready
+                  </span>
+                </div>
+                <div className="text-[11px] text-white/60 mt-0.5 font-mono">
+                  Catchment: <strong className="text-white">{catchmentId}</strong> • Origin: <strong className="text-white">{forecastOrigin}</strong> • Mode: <strong className="text-white uppercase">{operatingMode}</strong>
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="text-xs text-white/60 hover:text-red-400 flex items-center gap-1 transition-colors px-2 py-1 font-mono"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Clear File</span>
+            </button>
+          </div>
+        )}
+
         {/* Form Controls */}
         <div className="glass-card p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs">
           <div>
             <label className="block text-white/70 font-medium uppercase tracking-wider text-[11px] mb-2 font-mono">
-              Catchment Gauge ID
+              Catchment ID (backend matching)
             </label>
             <input
               type="text"
               value={catchmentId}
               onChange={(e) => setCatchmentId(e.target.value)}
-              className="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-white/50"
+              className="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white font-mono focus:outline-none focus:border-white/50"
+              placeholder="camels_01047000"
             />
           </div>
 
@@ -419,12 +594,26 @@ function DatasetTestingContent() {
               type="date"
               value={forecastOrigin}
               onChange={(e) => setForecastOrigin(e.target.value)}
-              className="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-white/50"
+              className="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white font-mono focus:outline-none focus:border-white/50"
             />
+          </div>
+
+          <div className="sm:col-span-3 pt-1 border-t border-white/5 flex items-center justify-between">
+            <label className="flex items-center gap-2 cursor-pointer text-white/70 hover:text-white">
+              <input
+                type="checkbox"
+                checked={allowUnsupportedRegion}
+                onChange={(e) => setAllowUnsupportedRegion(e.target.checked)}
+                className="rounded border-white/20 bg-white/5 text-emerald-500 focus:ring-0"
+              />
+              <span className="text-[11px] font-mono">
+                allow_unsupported_region (allow regression-only prediction if regional Q95 is undefined)
+              </span>
+            </label>
           </div>
         </div>
 
-        {/* Drag and Drop Zone */}
+        {/* Drag and Drop Zone (Manual upload remains optional) */}
         <div
           onDragOver={(e) => {
             e.preventDefault();
@@ -448,11 +637,20 @@ function DatasetTestingContent() {
           />
           <UploadCloud className="w-10 h-10 mx-auto text-white/60 mb-3" />
           <div className="text-base font-medium text-white">
-            Drag & Drop Catchment Time Series CSV
+            {uploadedFile ? (
+              <span className="text-emerald-400 font-mono">
+                Active File: {dataset?.filename || (uploadedFile as any).name}
+              </span>
+            ) : (
+              "Drag & Drop Catchment Time Series CSV"
+            )}
           </div>
           <p className="text-xs text-white/60 mt-1 max-w-md mx-auto">
-            Supports standard hydrological datasets (CAMELS / ERA5-Land / USGS format). Requires date and daily
-            meteorological forcings.
+            {uploadedFile ? (
+              <span>CSV loaded into upload state. Manual upload remains optional: browse or drop another file below at any time.</span>
+            ) : (
+              "Uploaded file will be sent as raw multipart/form-data directly to POST /predict. Requires ERA5-Land forcings and ≥ 365 days antecedent history prior to origin."
+            )}
           </p>
           <div className="mt-4">
             <label
@@ -460,29 +658,19 @@ function DatasetTestingContent() {
               className="glass-pill text-xs py-2 px-5 inline-flex items-center gap-2 cursor-pointer shadow-sm"
             >
               <FileText className="w-3.5 h-3.5" />
-              <span>Browse Local File</span>
+              <span>{uploadedFile ? "Replace With Local File" : "Browse Local File (Optional Manual Upload)"}</span>
             </label>
           </div>
         </div>
 
-        {/* Errors */}
+        {/* API Error State */}
         {apiError && (
-          <div className="p-4 bg-red-950/40 border border-red-500/30 rounded-xl text-xs text-red-200 space-y-2">
+          <div className="p-4 bg-red-950/50 border border-red-500/40 rounded-xl text-xs text-red-200 space-y-2">
             <div className="flex items-center gap-2 font-medium">
               <AlertCircle className="w-4 h-4 text-red-400" />
-              <span>Notice:</span>
+              <span>Backend Error:</span>
             </div>
-            <p>{apiError}</p>
-            {dataset && !backendHealth?.connected && (
-              <div className="pt-2">
-                <button
-                  onClick={handleRunBenchmarkReplay}
-                  className="glass-pill text-xs py-1.5 px-4"
-                >
-                  Run Verified Benchmark Replay Instead
-                </button>
-              </div>
-            )}
+            <p className="font-mono text-[11px] leading-relaxed whitespace-pre-wrap">{apiError}</p>
           </div>
         )}
 
@@ -506,10 +694,39 @@ function DatasetTestingContent() {
               </button>
             </div>
 
+            {/* Validation Errors & Warnings */}
+            {dataset.validationErrors.length > 0 && (
+              <div className="p-4 bg-red-950/40 border border-red-500/30 rounded-xl text-xs text-red-200 space-y-2">
+                <div className="flex items-center gap-2 font-medium">
+                  <AlertCircle className="w-4 h-4 text-red-400" />
+                  <span>Validation Incompatibilities ({dataset.validationErrors.length}):</span>
+                </div>
+                <ul className="list-disc list-inside space-y-1 font-mono text-[11px]">
+                  {dataset.validationErrors.map((err, i) => (
+                    <li key={i}>{err}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {dataset.validationWarnings.length > 0 && (
+              <div className="p-3 bg-amber-950/30 border border-amber-500/20 rounded-xl text-xs text-amber-200 space-y-1">
+                <div className="flex items-center gap-2 font-medium text-amber-300">
+                  <AlertTriangle className="w-3.5 h-3.5" />
+                  <span>Notices:</span>
+                </div>
+                <ul className="list-disc list-inside space-y-1 text-[11px]">
+                  {dataset.validationWarnings.map((warn, i) => (
+                    <li key={i}>{warn}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
               <div className="p-3 bg-white/[0.03] rounded-lg border border-white/10">
                 <div className="text-white/60 text-[11px]">Date Span</div>
-                <div className="text-white font-medium mt-1">
+                <div className="text-white font-medium mt-1 font-mono">
                   {dataset.dateRange ? `${dataset.dateRange.start} → ${dataset.dateRange.end}` : "N/A"}
                 </div>
               </div>
@@ -517,7 +734,7 @@ function DatasetTestingContent() {
               <div className="p-3 bg-white/[0.03] rounded-lg border border-white/10">
                 <div className="text-white/60 text-[11px]">History Window</div>
                 <div className="text-white font-medium mt-1">
-                  {dataset.rowCount} Days ({dataset.rowCount >= 365 ? "Optimal" : "Sufficient"})
+                  {dataset.rowCount} Days ({dataset.rowCount >= 365 ? "Sufficient" : "Insufficient"})
                 </div>
               </div>
 
@@ -531,7 +748,11 @@ function DatasetTestingContent() {
               <div className="p-3 bg-white/[0.03] rounded-lg border border-white/10">
                 <div className="text-white/60 text-[11px]">Observed Flow Column</div>
                 <div className="text-white font-medium mt-1">
-                  {dataset.hasDischargeColumn ? "Present" : "Not Present (PUB)"}
+                  {dataset.hasDischargeColumn ? (
+                    <span className="text-emerald-400 font-mono">streamflow (Present)</span>
+                  ) : (
+                    <span className="text-amber-400 font-mono">None (Ungauged)</span>
+                  )}
                 </div>
               </div>
             </div>
@@ -544,7 +765,7 @@ function DatasetTestingContent() {
                   <thead className="bg-white/5 text-white/60 border-b border-white/10">
                     <tr>
                       {dataset.columns.map((c) => (
-                        <th key={c} className="p-2.5 font-medium">
+                        <th key={c} className="p-2.5 font-medium font-mono text-[11px]">
                           {c}
                         </th>
                       ))}
@@ -568,16 +789,17 @@ function DatasetTestingContent() {
             {/* Submit Action */}
             <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="text-xs text-white/60">
-                Origin: <strong className="text-white">{forecastOrigin}</strong> • Mode:{" "}
-                <strong className="text-white uppercase">{operatingMode}</strong>
+                Catchment: <strong className="text-white font-mono">{catchmentId}</strong> • Origin:{" "}
+                <strong className="text-white font-mono">{forecastOrigin}</strong> • Mode:{" "}
+                <strong className="text-white uppercase font-mono">{operatingMode}</strong>
               </div>
 
               <button
                 disabled={isLoading || dataset.validationErrors.length > 0}
-                onClick={backendHealth?.connected ? handleRunPrediction : handleRunBenchmarkReplay}
-                className="glass-pill-solid text-sm py-2.5 px-7 shadow-lg w-full sm:w-auto justify-center"
+                onClick={handleRunPrediction}
+                className="glass-pill-solid text-sm py-2.5 px-7 shadow-lg w-full sm:w-auto justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? "Running Inference..." : "Run Predictions"}
+                {isLoading ? "Running Prediction..." : "Run Predictions"}
               </button>
             </div>
           </div>
@@ -589,7 +811,7 @@ function DatasetTestingContent() {
             <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto" />
             <div className="text-sm font-medium text-white">{loadingMessage}</div>
             <p className="text-xs text-white/60">
-              Computing 4 linear reservoir states, Ridge baseline, and LightGBM residual hydrograph corrections.
+              Processing antecedent window, linear reservoir states, and ensemble inference models.
             </p>
           </div>
         )}

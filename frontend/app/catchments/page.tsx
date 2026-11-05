@@ -27,9 +27,9 @@ export default function CatchmentsPage() {
         </div>
       </section>
 
-      {/* Main Map Content */}
+      {/* Main Map Content: Expanded interactive USGS National Water Dashboard */}
       <section className="py-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <CatchmentMap onSelectCatchment={(f) => setSelectedCatchment(f)} />
+        <CatchmentMap variant="expanded" />
 
         {/* Verification Note */}
         <div className="p-4 glass-card border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-white/70">
