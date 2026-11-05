@@ -26,7 +26,7 @@ lightgbm>=4.3.0
 # Optional Sequence Modeling & Geospatial Helpers (Experimental / Backlog)
 # torch>=2.2.0
 # geopandas>=0.14.0
-pandas>=2.2.0
+pandas==2.2.3
 pyarrow>=15.0.0
 joblib>=1.3.0
 xgboost>=2.0.0,<3.0.0
