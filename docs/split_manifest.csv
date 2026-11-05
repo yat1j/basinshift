@@ -1,0 +1,151 @@
+catchment_id,source_collection,country,drainage_area_km2,streamflow_completeness,partition,training_period,validation_period
+camels_01047000,CAMELS-US,United States,911.6758147200001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_01078000,CAMELS-US,United States,222.220979838,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_01142500,CAMELS-US,United States,78.99463735500001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_01466500,CAMELS-US,United States,6.086472058500001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_01485500,CAMELS-US,United States,116.290466139,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_01542810,CAMELS-US,United States,13.571537696400002,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_01557500,CAMELS-US,United States,114.218475651,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_02053800,CAMELS-US,United States,282.30870399,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_02064000,CAMELS-US,United States,427.34803815000004,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_02177000,CAMELS-US,United States,536.12753877,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_02198100,CAMELS-US,United States,79.771633788,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_02216180,CAMELS-US,United States,127.42741501200001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_02300700,CAMELS-US,United States,75.36865400100001,99.97%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_02371500,CAMELS-US,United States,1294.9940550000001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_03066000,CAMELS-US,United States,222.997976271,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_03140000,CAMELS-US,United States,70.44767659200001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_03161000,CAMELS-US,United States,530.94756255,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_03213700,CAMELS-US,United States,2424.22887096,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_03439000,CAMELS-US,United States,175.860192669,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_03455500,CAMELS-US,United States,71.48367183600001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_03504000,CAMELS-US,United States,134.420382909,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_04057510,CAMELS-US,United States,473.96782413000005,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_04127997,CAMELS-US,United States,497.27771712000003,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_04197100,CAMELS-US,United States,385.90822839000003,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_05087500,CAMELS-US,United States,660.44696805,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_05399500,CAMELS-US,United States,580.15733664,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_05503800,CAMELS-US,United States,207.1990488,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_06344600,CAMELS-US,United States,406.62813327000003,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_06354000,CAMELS-US,United States,10593.0513699,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_06853800,CAMELS-US,United States,587.92730097,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_06889200,CAMELS-US,United States,385.90822839000003,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_06889500,CAMELS-US,United States,751.0965519,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_06910800,CAMELS-US,United States,458.42789547,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_07301500,CAMELS-US,United States,6868.648467720001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_07315700,CAMELS-US,United States,1486.65317514,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_07362100,CAMELS-US,United States,997.1454223500001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_08070200,CAMELS-US,United States,1004.9153866800001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_08086290,CAMELS-US,United States,725.1966708,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_08164300,CAMELS-US,United States,859.87605252,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_08200000,CAMELS-US,United States,247.602863316,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_09066000,CAMELS-US,United States,32.374851375000006,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_09066200,CAMELS-US,United States,16.0061265198,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_09312600,CAMELS-US,United States,195.803101116,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_09484600,CAMELS-US,United States,1183.62456627,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_10172800,CAMELS-US,United States,10.852050180900001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_10205030,CAMELS-US,United States,134.161384098,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_10244950,CAMELS-US,United States,28.748868021,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_10343500,CAMELS-US,United States,27.194875155000002,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_11124500,CAMELS-US,United States,191.65912014000003,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_11151300,CAMELS-US,United States,603.46722963,98.52%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_11451100,CAMELS-US,United States,155.917284222,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_12411000,CAMELS-US,United States,867.64601685,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_12451000,CAMELS-US,United States,831.3861833100001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_13023000,CAMELS-US,United States,1160.31467328,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_13083000,CAMELS-US,United States,134.67938172,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_13340000,CAMELS-US,United States,14263.06452177,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_14141500,CAMELS-US,United States,59.82872534100001,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_14305500,CAMELS-US,United States,523.17759822,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_14308990,CAMELS-US,United States,167.57223071700002,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_14362250,CAMELS-US,United States,41.43980976,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_108002A,CAMELS-AUS,Australia,910.2,99.64%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_112002A,CAMELS-AUS,Australia,16.0,97.78%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_116010A,CAMELS-AUS,Australia,226.8,99.92%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_116013A,CAMELS-AUS,Australia,319.4,91.98%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_121001A,CAMELS-AUS,Australia,603.6,99.29%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_122004A,CAMELS-AUS,Australia,46.6,98.25%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_138113A,CAMELS-AUS,Australia,170.3,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_145011A,CAMELS-AUS,Australia,82.8,94.96%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_146014A,CAMELS-AUS,Australia,6.8,99.75%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_204034,CAMELS-AUS,Australia,400.1,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_206014,CAMELS-AUS,Australia,369.9,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_215207,CAMELS-AUS,Australia,4682.0,98.69%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_216004,CAMELS-AUS,Australia,93.4,98.63%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_221207,CAMELS-AUS,Australia,158.1,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_221210,CAMELS-AUS,Australia,838.8,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_224206,CAMELS-AUS,Australia,1102.3,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_225110A,CAMELS-AUS,Australia,132.1,97.89%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_225219,CAMELS-AUS,Australia,572.0,99.26%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_226222,CAMELS-AUS,Australia,64.7,97.67%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_227225A,CAMELS-AUS,Australia,20.3,99.26%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_229650A,CAMELS-AUS,Australia,25.5,94.82%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_302214,CAMELS-AUS,Australia,229.1,99.15%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_315450,CAMELS-AUS,Australia,309.6,98.80%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_318076,CAMELS-AUS,Australia,374.2,98.11%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_401009,CAMELS-AUS,Australia,215.5,95.76%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_401208,CAMELS-AUS,Australia,356.2,99.97%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_401210,CAMELS-AUS,Australia,412.9,99.95%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_402206,CAMELS-AUS,Australia,127.4,98.69%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_403209A,CAMELS-AUS,Australia,5486.9,99.84%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_403221,CAMELS-AUS,Australia,211.5,99.01%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_403226,CAMELS-AUS,Australia,107.9,99.42%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_405209,CAMELS-AUS,Australia,625.8,99.81%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_405227,CAMELS-AUS,Australia,628.1,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_405248,CAMELS-AUS,Australia,292.1,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_405264,CAMELS-AUS,Australia,336.5,99.89%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_405274,CAMELS-AUS,Australia,181.4,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_406208,CAMELS-AUS,Australia,37.9,99.97%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_407215,CAMELS-AUS,Australia,1027.5,98.82%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_407230,CAMELS-AUS,Australia,150.8,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_410730,CAMELS-AUS,Australia,129.2,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_410734,CAMELS-AUS,Australia,564.4,99.45%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_415207,CAMELS-AUS,Australia,305.8,99.89%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_415226,CAMELS-AUS,Australia,129.7,98.17%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_416008,CAMELS-AUS,Australia,898.0,99.23%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_418005,CAMELS-AUS,Australia,237.5,98.06%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_422306A,CAMELS-AUS,Australia,81.9,99.95%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_422394A,CAMELS-AUS,Australia,327.8,99.18%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_604053,CAMELS-AUS,Australia,1841.4,99.95%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_606001,CAMELS-AUS,Australia,473.7,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_613002,CAMELS-AUS,Australia,147.2,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_804001,CAMELS-AUS,Australia,1834.8,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_919309A,CAMELS-AUS,Australia,8656.4,91.02%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_A0030501,CAMELS-AUS,Australia,233250.3,100.00%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_A2390519,CAMELS-AUS,Australia,1549.0,98.25%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_A2390523,CAMELS-AUS,Australia,485.4,93.24%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_A5130501,CAMELS-AUS,Australia,190.5,98.88%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_G0060005,CAMELS-AUS,Australia,436.3,93.67%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_G8140040,CAMELS-AUS,Australia,47745.4,99.23%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_G9030250,CAMELS-AUS,Australia,43473.7,90.44%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camelsaus_G9070142,CAMELS-AUS,Australia,4015.5,97.95%,Development,2005-01-01 to 2012-12-31,2013-01-01 to 2014-12-31 (Test A Temporal)
+camels_01013500,CAMELS-US,United States,2253.2896557000004,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_01170100,CAMELS-US,United States,107.225507754,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_02027500,CAMELS-US,United States,123.54243284700001,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_02053200,CAMELS-US,United States,582.7473247500001,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_02056900,CAMELS-US,United States,297.84863265,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_02369800,CAMELS-US,United States,227.14195724700002,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_04115265,CAMELS-US,United States,102.82252796700001,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_05595730,CAMELS-US,United States,227.91895368000002,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_06311000,CAMELS-US,United States,61.900715829,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_07057500,CAMELS-US,United States,1452.9833297100001,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_08189500,CAMELS-US,United States,1787.0917959,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_11237500,CAMELS-US,United States,59.310727719,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_12013500,CAMELS-US,United States,336.69845430000004,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_12041200,CAMELS-US,United States,655.26699183,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camels_13331500,CAMELS-US,United States,621.5971464,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_105105A,CAMELS-AUS,Australia,296.1,95.84%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_116011A,CAMELS-AUS,Australia,90.6,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_143009A,CAMELS-AUS,Australia,3868.7,99.01%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_143110A,CAMELS-AUS,Australia,125.7,96.80%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_145107A,CAMELS-AUS,Australia,99.7,99.86%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_218001,CAMELS-AUS,Australia,90.1,97.84%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_308799,CAMELS-AUS,Australia,268.3,92.96%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_401216,CAMELS-AUS,Australia,358.1,99.97%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_402204,CAMELS-AUS,Australia,280.5,99.62%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_405245,CAMELS-AUS,Australia,117.3,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_410057,CAMELS-AUS,Australia,664.7,99.86%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_616002,CAMELS-AUS,Australia,669.3,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_809310,CAMELS-AUS,Australia,547.8,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_912101A,CAMELS-AUS,Australia,12577.3,98.85%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31
+camelsaus_A5040523,CAMELS-AUS,Australia,43.5,100.00%,Test_B_Geographic_Holdout,None (Held out),2005-01-01 to 2014-12-31

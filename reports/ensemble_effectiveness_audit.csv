@@ -1,0 +1,13 @@
+horizon_days,feature_mode,partition,weight_LightGBM,weight_XGBoost,weight_Ridge,weight_Conceptual_Hybrid,is_degenerate_single_model,dominant_model,best_individual_model,best_individual_rmse,best_individual_median_nse,ensemble_rmse,ensemble_median_nse,delta_rmse,delta_median_nse,audit_verdict
+1,Ungauged,Temporal_Val_Test_A,0.0,0.9249,0.0751,0.0,False,XGBoost,Conceptual_Hybrid,3.1796,0.1051,3.3913,0.1677,0.2117,0.0626,SLIGHT DEGRADATION VS Conceptual_Hybrid (Delta RMSE: +0.2117)
+1,Ungauged_PUB,Geographic_Val_Test_B,0.0,0.9249,0.0751,0.0,False,XGBoost,XGBoost,2.7347,0.3154,2.7273,0.32,-0.0074,0.0046,IMPROVEMENT OVER BEST SINGLE (Delta RMSE: -0.0074)
+1,Gauged,Temporal_Val_Test_A,0.0,1.0,0.0,0.0,True,XGBoost,Conceptual_Hybrid,2.8894,0.5782,2.9679,0.6439,0.0785,0.0657,DEGENERATE (Selected XGBoost exclusively)
+1,Gauged_Transfer,Geographic_Val_Test_B,0.0,1.0,0.0,0.0,True,XGBoost,Conceptual_Hybrid,2.3484,0.6031,2.4398,0.5858,0.0914,-0.0173,DEGENERATE (Selected XGBoost exclusively)
+3,Ungauged,Temporal_Val_Test_A,0.0,1.0,0.0,0.0,True,XGBoost,XGBoost,3.8728,0.0277,3.8728,0.0277,0.0,0.0,DEGENERATE (Selected XGBoost exclusively)
+3,Ungauged_PUB,Geographic_Val_Test_B,0.0,1.0,0.0,0.0,True,XGBoost,LightGBM,3.3425,0.0831,3.3507,0.0815,0.0082,-0.0016,DEGENERATE (Selected XGBoost exclusively)
+3,Gauged,Temporal_Val_Test_A,0.0,1.0,0.0,0.0,True,XGBoost,LightGBM,3.8336,0.1922,3.8529,0.2046,0.0193,0.0124,DEGENERATE (Selected XGBoost exclusively)
+3,Gauged_Transfer,Geographic_Val_Test_B,0.0,1.0,0.0,0.0,True,XGBoost,LightGBM,3.1389,0.2238,3.1579,0.2375,0.019,0.0137,DEGENERATE (Selected XGBoost exclusively)
+7,Ungauged,Temporal_Val_Test_A,0.0,1.0,0.0,0.0,True,XGBoost,LightGBM,4.0051,-0.0131,4.0432,-0.0262,0.0381,-0.0131,DEGENERATE (Selected XGBoost exclusively)
+7,Ungauged_PUB,Geographic_Val_Test_B,0.0,1.0,0.0,0.0,True,XGBoost,Ridge,3.54,-0.031,3.5873,-0.012,0.0473,0.019,DEGENERATE (Selected XGBoost exclusively)
+7,Gauged,Temporal_Val_Test_A,0.0,1.0,0.0,0.0,True,XGBoost,LightGBM,3.9808,0.0421,3.9881,0.0391,0.0073,-0.003,DEGENERATE (Selected XGBoost exclusively)
+7,Gauged_Transfer,Geographic_Val_Test_B,0.0,1.0,0.0,0.0,True,XGBoost,XGBoost,3.3478,0.0265,3.3478,0.0265,0.0,0.0,DEGENERATE (Selected XGBoost exclusively)

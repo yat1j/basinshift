@@ -1,0 +1,9 @@
+{
+  "status": "error",
+  "error_type": "ValueError",
+  "error_message": "Insufficient antecedent history for catchment 'camels_01047000': requires at least 365 days prior to forecast origin 2013-05-15, but found 99 days (100 records).",
+  "catchment_id": "camels_01047000",
+  "forecast_origin": "2013-05-15",
+  "feature_mode": "gauged",
+  "resolution_guidance": "Ensure history_df provides at least 365 days of continuous antecedent daily observations strictly prior to the forecast origin date."
+}

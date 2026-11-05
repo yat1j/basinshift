@@ -1,0 +1,109 @@
+{
+  "catchment_id": "camels_01047000",
+  "forecast_origin": "2013-05-15",
+  "feature_mode": "Ungauged",
+  "forecast_horizons_days": [
+    1,
+    3,
+    7
+  ],
+  "discharge_unit": "mm/day",
+  "predicted_discharge": {
+    "1d": 0.8637,
+    "3d": 1.1861,
+    "7d": 0.996
+  },
+  "high_flow_probability": {
+    "1d": 0.0455,
+    "3d": 0.1094,
+    "7d": 0.21
+  },
+  "high_flow_alert_threshold": {
+    "1d": 0.7,
+    "3d": 0.66,
+    "7d": 0.66
+  },
+  "high_flow_alert": {
+    "1d": false,
+    "3d": false,
+    "7d": false
+  },
+  "extreme_flow_probability": null,
+  "prediction_intervals": null,
+  "uncertainty_available": false,
+  "model_metadata": {
+    "regional_q95_threshold_mm_per_day": 5.404,
+    "source_collection": "CAMELS-US",
+    "hydrological_features": "Variant A (empirical conceptual interaction features; not physically mass-balanced)",
+    "probability_calibration": "Raw model predicted probabilities from LightGBM logistic sigmoid outputs (no post-hoc calibration layer applied)",
+    "regression_models": {
+      "1d": {
+        "model_family": "Ensemble (XGBoost + Ridge)",
+        "artifacts": [
+          "xgboost_ungauged_h1.joblib",
+          "hybrid_ungauged_h1.joblib"
+        ],
+        "weights": {
+          "XGBoost": 0.9249,
+          "Ridge": 0.0751
+        },
+        "raw_predictions": {
+          "XGBoost": 0.7882,
+          "Ridge": 1.793
+        },
+        "post_processing": "max(0.0, blended_prediction)"
+      },
+      "3d": {
+        "model_family": "XGBoost",
+        "artifacts": [
+          "xgboost_ungauged_h3.joblib"
+        ],
+        "weights": {
+          "XGBoost": 1.0
+        },
+        "raw_predictions": {
+          "XGBoost": 1.1861
+        },
+        "post_processing": "max(0.0, raw_prediction)"
+      },
+      "7d": {
+        "model_family": "XGBoost",
+        "artifacts": [
+          "xgboost_ungauged_h7.joblib"
+        ],
+        "weights": {
+          "XGBoost": 1.0
+        },
+        "raw_predictions": {
+          "XGBoost": 0.996
+        },
+        "post_processing": "max(0.0, raw_prediction)"
+      }
+    },
+    "classifier_models": {
+      "1d": {
+        "model_family": "LightGBM Classifier",
+        "artifact": "classifier_ungauged_h1.joblib",
+        "scale_pos_weight": 5.0,
+        "decision_threshold_tau_star": 0.7,
+        "target_definition": "streamflow(t+1d) > 5.4040 mm/day"
+      },
+      "3d": {
+        "model_family": "LightGBM Classifier",
+        "artifact": "classifier_ungauged_h3.joblib",
+        "scale_pos_weight": 5.0,
+        "decision_threshold_tau_star": 0.66,
+        "target_definition": "streamflow(t+3d) > 5.4040 mm/day"
+      },
+      "7d": {
+        "model_family": "LightGBM Classifier",
+        "artifact": "classifier_ungauged_h7.joblib",
+        "scale_pos_weight": 5.0,
+        "decision_threshold_tau_star": 0.66,
+        "target_definition": "streamflow(t+7d) > 5.4040 mm/day"
+      }
+    }
+  },
+  "forecast_basis": "historical_reanalysis_replay",
+  "warnings": []
+}

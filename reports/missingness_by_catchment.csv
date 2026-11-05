@@ -1,0 +1,151 @@
+catchment_id,source_collection,country,partition,total_records,missing_count,missing_pct,zero_count,zero_pct,isolated_gaps_count,contiguous_gaps_count,max_consecutive_missing_days
+camelsaus_105105A,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,152,4.16210295728368,459,12.568455640744796,6,6,92
+camelsaus_108002A,CAMELS-AUS,Australia,Development,3652,13,0.3559693318729463,0,0.0,2,1,11
+camelsaus_112002A,CAMELS-AUS,Australia,Development,3652,81,2.217962760131435,0,0.0,3,2,70
+camelsaus_116010A,CAMELS-AUS,Australia,Development,3652,3,0.08214676889375684,0,0.0,3,0,1
+camelsaus_116011A,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camelsaus_116013A,CAMELS-AUS,Australia,Development,3652,293,8.023001095290253,0,0.0,5,2,232
+camelsaus_121001A,CAMELS-AUS,Australia,Development,3652,26,0.7119386637458927,1131,30.96933187294633,6,1,20
+camelsaus_122004A,CAMELS-AUS,Australia,Development,3652,64,1.7524644030668126,810,22.179627601314348,3,2,35
+camelsaus_138113A,CAMELS-AUS,Australia,Development,3652,0,0.0,800,21.905805038335156,0,0,0
+camelsaus_143009A,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,36,0.9857612267250823,845,23.138006571741514,1,1,35
+camelsaus_143110A,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,117,3.2037239868565166,1512,41.40197152245345,3,9,34
+camelsaus_145011A,CAMELS-AUS,Australia,Development,3652,184,5.038335158817087,142,3.888280394304491,6,3,168
+camelsaus_145107A,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,5,0.13691128148959475,0,0.0,1,1,4
+camelsaus_146014A,CAMELS-AUS,Australia,Development,3652,9,0.24644030668127057,0,0.0,4,1,5
+camelsaus_204034,CAMELS-AUS,Australia,Development,3652,0,0.0,8,0.21905805038335158,0,0,0
+camelsaus_206014,CAMELS-AUS,Australia,Development,3652,0,0.0,106,2.9025191675794084,0,0,0
+camelsaus_215207,CAMELS-AUS,Australia,Development,3652,48,1.3143483023001095,10,0.2738225629791895,3,4,24
+camelsaus_216004,CAMELS-AUS,Australia,Development,3652,50,1.3691128148959473,1036,28.368017524644028,0,1,50
+camelsaus_218001,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,79,2.163198247535597,61,1.6703176341730557,1,1,78
+camelsaus_221207,CAMELS-AUS,Australia,Development,3652,0,0.0,0,0.0,0,0,0
+camelsaus_221210,CAMELS-AUS,Australia,Development,3652,0,0.0,309,8.461117196056955,0,0,0
+camelsaus_224206,CAMELS-AUS,Australia,Development,3652,0,0.0,31,0.8488499452354874,0,0,0
+camelsaus_225110A,CAMELS-AUS,Australia,Development,3652,77,2.108433734939759,0,0.0,0,4,31
+camelsaus_225219,CAMELS-AUS,Australia,Development,3652,27,0.7393209200438117,0,0.0,0,1,27
+camelsaus_226222,CAMELS-AUS,Australia,Development,3652,85,2.3274917853231107,0,0.0,1,5,35
+camelsaus_227225A,CAMELS-AUS,Australia,Development,3652,27,0.7393209200438117,0,0.0,0,1,27
+camelsaus_229650A,CAMELS-AUS,Australia,Development,3652,189,5.175246440306681,0,0.0,0,4,105
+camelsaus_302214,CAMELS-AUS,Australia,Development,3652,31,0.8488499452354874,4,0.10952902519167579,0,2,17
+camelsaus_308799,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,257,7.037239868565169,0,0.0,1,6,112
+camelsaus_315450,CAMELS-AUS,Australia,Development,3652,44,1.2048192771084338,0,0.0,3,8,9
+camelsaus_318076,CAMELS-AUS,Australia,Development,3652,69,1.8893756845564074,0,0.0,0,7,18
+camelsaus_401009,CAMELS-AUS,Australia,Development,3652,155,4.244249726177437,317,8.680175246440307,1,11,48
+camelsaus_401208,CAMELS-AUS,Australia,Development,3652,1,0.027382256297918947,0,0.0,1,0,1
+camelsaus_401210,CAMELS-AUS,Australia,Development,3652,2,0.054764512595837894,0,0.0,0,1,2
+camelsaus_401216,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,1,0.027382256297918947,0,0.0,1,0,1
+camelsaus_402204,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,14,0.3833515881708653,149,4.079956188389923,1,2,8
+camelsaus_402206,CAMELS-AUS,Australia,Development,3652,48,1.3143483023001095,0,0.0,0,2,37
+camelsaus_403209A,CAMELS-AUS,Australia,Development,3652,6,0.16429353778751368,0,0.0,0,2,4
+camelsaus_403221,CAMELS-AUS,Australia,Development,3652,36,0.9857612267250823,497,13.608981380065718,0,2,29
+camelsaus_403226,CAMELS-AUS,Australia,Development,3652,21,0.5750273822562979,437,11.96604600219058,1,1,20
+camelsaus_405209,CAMELS-AUS,Australia,Development,3652,7,0.19167579408543264,0,0.0,0,1,7
+camelsaus_405227,CAMELS-AUS,Australia,Development,3652,0,0.0,0,0.0,0,0,0
+camelsaus_405245,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,0,0.0,308,8.433734939759036,0,0,0
+camelsaus_405248,CAMELS-AUS,Australia,Development,3652,0,0.0,2409,65.96385542168674,0,0,0
+camelsaus_405264,CAMELS-AUS,Australia,Development,3652,4,0.10952902519167579,0,0.0,0,2,2
+camelsaus_405274,CAMELS-AUS,Australia,Development,3652,0,0.0,317,8.680175246440307,0,0,0
+camelsaus_406208,CAMELS-AUS,Australia,Development,3652,1,0.027382256297918947,1556,42.606790799561885,1,0,1
+camelsaus_407215,CAMELS-AUS,Australia,Development,3652,43,1.177437020810515,1146,31.380065717415118,0,2,24
+camelsaus_407230,CAMELS-AUS,Australia,Development,3652,0,0.0,2107,57.694414019715225,0,0,0
+camelsaus_410057,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,5,0.13691128148959475,0,0.0,0,1,5
+camelsaus_410730,CAMELS-AUS,Australia,Development,3652,0,0.0,0,0.0,0,0,0
+camelsaus_410734,CAMELS-AUS,Australia,Development,3652,20,0.547645125958379,144,3.943044906900329,0,1,20
+camelsaus_415207,CAMELS-AUS,Australia,Development,3652,4,0.10952902519167579,1011,27.683461117196057,0,1,4
+camelsaus_415226,CAMELS-AUS,Australia,Development,3652,67,1.8346111719605696,3428,93.86637458926616,0,3,29
+camelsaus_416008,CAMELS-AUS,Australia,Development,3652,28,0.7667031763417306,736,20.153340635268346,0,1,28
+camelsaus_418005,CAMELS-AUS,Australia,Development,3652,71,1.9441401971522454,485,13.28039430449069,0,1,71
+camelsaus_422306A,CAMELS-AUS,Australia,Development,3652,2,0.054764512595837894,823,22.535596933187293,2,0,1
+camelsaus_422394A,CAMELS-AUS,Australia,Development,3652,30,0.8214676889375685,514,14.074479737130337,2,1,28
+camelsaus_604053,CAMELS-AUS,Australia,Development,3652,2,0.054764512595837894,0,0.0,0,1,2
+camelsaus_606001,CAMELS-AUS,Australia,Development,3652,0,0.0,1235,33.8170865279299,0,0,0
+camelsaus_613002,CAMELS-AUS,Australia,Development,3652,0,0.0,487,13.335158817086528,0,0,0
+camelsaus_616002,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,0,0.0,2651,72.59036144578313,0,0,0
+camelsaus_804001,CAMELS-AUS,Australia,Development,3652,0,0.0,80,2.190580503833516,0,0,0
+camelsaus_809310,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,0,0.0,2096,57.39320920043811,0,0,0
+camelsaus_912101A,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,42,1.1500547645125958,0,0.0,1,1,41
+camelsaus_919309A,CAMELS-AUS,Australia,Development,3652,328,8.981380065717415,284,7.776560788608982,0,6,155
+camelsaus_A0030501,CAMELS-AUS,Australia,Development,3652,0,0.0,1210,33.13253012048193,0,0,0
+camelsaus_A2390519,CAMELS-AUS,Australia,Development,3652,64,1.7524644030668126,2673,73.19277108433735,5,4,51
+camelsaus_A2390523,CAMELS-AUS,Australia,Development,3652,247,6.763417305585981,593,16.237677984665936,0,1,247
+camelsaus_A5040523,CAMELS-AUS,Australia,Test_B_Geographic_Holdout,3652,0,0.0,19,0.52026286966046,0,0,0
+camelsaus_A5130501,CAMELS-AUS,Australia,Development,3652,41,1.122672508214677,907,24.835706462212485,0,3,31
+camelsaus_G0060005,CAMELS-AUS,Australia,Development,3652,231,6.325301204819277,2954,80.88718510405258,0,2,210
+camelsaus_G8140040,CAMELS-AUS,Australia,Development,3652,28,0.7667031763417306,0,0.0,0,2,26
+camelsaus_G9030250,CAMELS-AUS,Australia,Development,3652,349,9.556407447973712,0,0.0,0,12,98
+camelsaus_G9070142,CAMELS-AUS,Australia,Development,3652,75,2.0536692223439212,346,9.474260679079956,0,2,62
+camels_01013500,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_01047000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_01078000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_01142500,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_01170100,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_01466500,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_01485500,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_01542810,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_01557500,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_02027500,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_02053200,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,3,0.08214676889375684,0,0,0
+camels_02053800,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_02056900,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_02064000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_02177000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_02198100,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_02216180,CAMELS-US,United States,Development,3652,0,0.0,1422,38.93756845564075,0,0,0
+camels_02300700,CAMELS-US,United States,Development,3652,1,0.027382256297918947,4,0.10952902519167579,1,0,1
+camels_02369800,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_02371500,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_03066000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_03140000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_03161000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_03213700,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_03439000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_03455500,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_03504000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_04057510,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_04115265,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_04127997,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_04197100,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_05087500,CAMELS-US,United States,Development,3652,0,0.0,35,0.9583789704271631,0,0,0
+camels_05399500,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_05503800,CAMELS-US,United States,Development,3652,0,0.0,521,14.266155531215771,0,0,0
+camels_05595730,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,307,8.406352683461117,0,0,0
+camels_06311000,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_06344600,CAMELS-US,United States,Development,3652,0,0.0,505,13.828039430449069,0,0,0
+camels_06354000,CAMELS-US,United States,Development,3652,0,0.0,36,0.9857612267250823,0,0,0
+camels_06853800,CAMELS-US,United States,Development,3652,0,0.0,32,0.8762322015334063,0,0,0
+camels_06889200,CAMELS-US,United States,Development,3652,0,0.0,17,0.4654983570646221,0,0,0
+camels_06889500,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_06910800,CAMELS-US,United States,Development,3652,0,0.0,324,8.87185104052574,0,0,0
+camels_07057500,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_07301500,CAMELS-US,United States,Development,3652,0,0.0,833,22.809419496166484,0,0,0
+camels_07315700,CAMELS-US,United States,Development,3652,0,0.0,824,22.562979189485212,0,0,0
+camels_07362100,CAMELS-US,United States,Development,3652,0,0.0,237,6.4895947426067915,0,0,0
+camels_08070200,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_08086290,CAMELS-US,United States,Development,3652,0,0.0,2043,55.941949616648415,0,0,0
+camels_08164300,CAMELS-US,United States,Development,3652,0,0.0,140,3.8335158817086525,0,0,0
+camels_08189500,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,300,8.214676889375685,0,0,0
+camels_08200000,CAMELS-US,United States,Development,3652,0,0.0,557,15.251916757940853,0,0,0
+camels_09066000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_09066200,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_09312600,CAMELS-US,United States,Development,3652,0,0.0,1,0.027382256297918947,0,0,0
+camels_09484600,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_10172800,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_10205030,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_10244950,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_10343500,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_11124500,CAMELS-US,United States,Development,3652,0,0.0,865,23.685651697699893,0,0,0
+camels_11151300,CAMELS-US,United States,Development,3652,54,1.4786418400876233,540,14.786418400876233,0,1,54
+camels_11237500,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_11451100,CAMELS-US,United States,Development,3652,0,0.0,338,9.255202628696605,0,0,0
+camels_12013500,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_12041200,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_12411000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_12451000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_13023000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_13083000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_13331500,CAMELS-US,United States,Test_B_Geographic_Holdout,3652,0,0.0,0,0.0,0,0,0
+camels_13340000,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_14141500,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_14305500,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_14308990,CAMELS-US,United States,Development,3652,0,0.0,0,0.0,0,0,0
+camels_14362250,CAMELS-US,United States,Development,3652,0,0.0,349,9.556407447973712,0,0,0

@@ -1,0 +1,13 @@
+horizon_days,model_name,feature_mode,partition,n_valid_samples,n_positive_events,prevalence,pr_auc,roc_auc,brier_score,precision,recall,f1,tn,fp,fn,tp
+1,HighFlow_Classifier,Ungauged,Temporal_Val_Test_A,86574,4228,0.0488,0.7366,0.9658,0.0326,0.5266,0.7824,0.6295,79372,2974,920,3308
+1,HighFlow_Classifier,Ungauged_PUB,Geographic_Val_Test_B,21526,1660,0.0771,0.7406,0.9504,0.0444,0.5766,0.7572,0.6547,18943,923,403,1257
+1,HighFlow_Classifier,Gauged,Temporal_Val_Test_A,86574,4228,0.0488,0.9278,0.9926,0.0163,0.7108,0.9134,0.7995,80775,1571,366,3862
+1,HighFlow_Classifier,Gauged_Transfer,Geographic_Val_Test_B,21526,1660,0.0771,0.9366,0.9905,0.0219,0.7535,0.9133,0.8257,19370,496,144,1516
+3,HighFlow_Classifier,Ungauged,Temporal_Val_Test_A,86336,4226,0.0489,0.6463,0.944,0.0386,0.504,0.6718,0.5759,79316,2794,1387,2839
+3,HighFlow_Classifier,Ungauged_PUB,Geographic_Val_Test_B,21466,1656,0.0771,0.657,0.9225,0.0533,0.5498,0.6667,0.6026,18906,904,552,1104
+3,HighFlow_Classifier,Gauged,Temporal_Val_Test_A,86336,4226,0.0489,0.7626,0.9648,0.0312,0.5798,0.7593,0.6575,79784,2326,1017,3209
+3,HighFlow_Classifier,Gauged_Transfer,Geographic_Val_Test_B,21466,1656,0.0771,0.7797,0.9548,0.0434,0.6193,0.7603,0.6826,19036,774,397,1259
+7,HighFlow_Classifier,Ungauged,Temporal_Val_Test_A,85862,4221,0.0492,0.5473,0.9211,0.0443,0.4523,0.5769,0.5071,78693,2948,1786,2435
+7,HighFlow_Classifier,Ungauged_PUB,Geographic_Val_Test_B,21346,1651,0.0773,0.5049,0.8826,0.0636,0.4745,0.53,0.5007,18726,969,776,875
+7,HighFlow_Classifier,Gauged,Temporal_Val_Test_A,85862,4221,0.0492,0.6101,0.936,0.0416,0.4655,0.6558,0.5445,78463,3178,1453,2768
+7,HighFlow_Classifier,Gauged_Transfer,Geographic_Val_Test_B,21346,1651,0.0773,0.6283,0.9187,0.0569,0.5146,0.6299,0.5664,18714,981,611,1040

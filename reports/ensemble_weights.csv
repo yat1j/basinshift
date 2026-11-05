@@ -1,0 +1,7 @@
+horizon_days,feature_mode,oof_rmse_blended,weight_LightGBM,weight_XGBoost,weight_Ridge,weight_Conceptual_Hybrid,oof_rmse_LightGBM,oof_rmse_XGBoost,oof_rmse_Ridge,oof_rmse_Conceptual_Hybrid
+1,Ungauged,1.9658,0.0,0.9249,0.0751,0.0,2.2428,1.97,2.5179,2.2058
+1,Gauged,1.4293,0.0,1.0,0.0,0.0,1.7698,1.4293,2.5179,1.7319
+3,Ungauged,2.467,0.0,1.0,0.0,0.0,2.7225,2.467,3.0887,2.6729
+3,Gauged,2.1895,0.0,1.0,0.0,0.0,2.5026,2.1895,3.0887,2.4923
+7,Ungauged,2.6865,0.0,1.0,0.0,0.0,2.9134,2.6865,3.2619,2.8499
+7,Gauged,2.3938,0.0,1.0,0.0,0.0,2.6842,2.3938,3.2619,2.6694
