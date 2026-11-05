@@ -20,7 +20,7 @@ pytest>=8.0.0
 
 # Hydrology-Informed ML Model Stack (Variant A Hybrid Pipeline)
 # Required for running full training pipelines and executing LightGBM residual estimators
-scikit-learn>=1.4.0
+scikit-learn==1.7.2
 lightgbm>=4.3.0
 
 # Optional Sequence Modeling & Geospatial Helpers (Experimental / Backlog)
