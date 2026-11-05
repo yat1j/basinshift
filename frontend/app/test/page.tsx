@@ -1,5 +1,5 @@
 "use client";
-
+import { checkBackendHealth, submitPrediction, HealthCheckResult } from "@/lib/api";
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
