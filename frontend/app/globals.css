@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "katex/dist/katex.min.css";
+
+:root {
+  --bg-darkest: #050a0f;
+  --bg-midnight: #081018;
+  --bg-deep: #0d1822;
+  --bg-surface: #132230;
+  --border-subtle: #1b2d3d;
+  --border-focus: #2d4b66;
+  --accent-cyan: #0ea5e9;
+  --accent-teal: #14b8a6;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-darkest);
+    color: var(--text-main);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    background-color: var(--bg-darkest);
+    color: var(--text-main);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background-color: rgba(14, 165, 233, 0.35);
+    color: #ffffff;
+  }
+}
+
+/* Restrained Scientific Typography & Badges */
+.scientific-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 9999px;
+  background-color: rgba(14, 165, 233, 0.08);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  color: #38bdf8;
+}
+
+.scientific-badge-amber {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 9999px;
+  background-color: rgba(217, 119, 6, 0.1);
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  color: #fbbf24;
+}
+
+/* Editorial Media Card */
+.editorial-card {
+  background-color: #0b1520;
+  border: 1px solid #1a2d3e;
+  border-radius: 0.5rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.editorial-card:hover {
+  border-color: #2b4964;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #081018;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e3549;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2b4964;
+}
+
+/* Leaflet Overrides */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #09131c !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #0d1b28 !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #203950 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-popup-tip {
+  background: #0d1b28 !important;
+}
