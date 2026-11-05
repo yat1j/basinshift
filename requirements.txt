@@ -1,0 +1,28 @@
+# =============================================================================
+# BASINSHIFT Python Core & Testing Dependencies
+# Python Compatibility: >= 3.10, <= 3.12
+# =============================================================================
+
+# Core Mathematical & Numerical Operations
+numpy>=1.26.0
+
+# Data Validation & API Schema Contracts
+pydantic>=2.7.0
+pydantic-settings>=2.2.0
+
+# API Service & Web Framework
+fastapi>=0.110.0
+uvicorn>=0.28.0
+requests>=2.31.0
+
+# Automated Testing & Verification
+pytest>=8.0.0
+
+# Hydrology-Informed ML Model Stack (Variant A Hybrid Pipeline)
+# Required for running full training pipelines and executing LightGBM residual estimators
+scikit-learn>=1.4.0
+lightgbm>=4.3.0
+
+# Optional Sequence Modeling & Geospatial Helpers (Experimental / Backlog)
+# torch>=2.2.0
+# geopandas>=0.14.0
